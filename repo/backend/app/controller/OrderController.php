@@ -82,11 +82,15 @@ class OrderController
                 'data' => $history,
             ]);
         } catch (\Exception $e) {
+            $code = $e->getCode() ?: 500;
+            if ($code < 100 || $code >= 600) {
+                $code = 500;
+            }
             return json([
                 'success' => false,
-                'code' => 404,
+                'code' => $code,
                 'error' => $e->getMessage(),
-            ], 404);
+            ], $code);
         }
     }
 
