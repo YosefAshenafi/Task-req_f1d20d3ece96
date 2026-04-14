@@ -214,6 +214,28 @@ Route::group('api/v1', function () {
             Route::get('', 'PreferenceController/index');
             Route::put('', 'PreferenceController/update');
         });
+
+        // Recommendation routes
+        Route::group('recommendations', function () {
+            Route::get('', 'RecommendationController/index');
+            Route::get('popular', 'RecommendationController/popular');
+        });
+
+        // Dashboard routes
+        Route::group('dashboard', function () {
+            Route::get('', 'DashboardController/index');
+            Route::get('custom', 'DashboardController/custom');
+            Route::post('custom', 'DashboardController/createCustom')
+                ->middleware('rbac', 'dashboard.create');
+            Route::put('custom/:id', 'DashboardController/updateCustom')
+                ->middleware('rbac', 'dashboard.update');
+        });
+
+        // Audit trail routes
+        Route::group('audit', function () {
+            Route::get('', 'AuditController/index')
+                ->middleware('rbac', 'audit.read');
+        });
     })->middleware('auth');
 
 })->allowCrossDomain();
