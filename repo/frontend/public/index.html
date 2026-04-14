@@ -56,26 +56,26 @@
     <script src="/src/lib/layui/layui.js"></script>
     <script src="/src/config.js"></script>
     <script>
-        layui.use(['element', 'layer', 'jquery'], function () {
+        layui.use(['element', 'layer', 'jquery', 'nav', 'common'], function () {
             var element = layui.element;
             var layer = layui.layer;
             var $ = layui.jquery;
+            var nav = layui.nav;
+            var common = layui.common;
 
             // Check authentication
-            var token = localStorage.getItem('campusops_token');
+            var token = common.getToken();
             if (!token) {
                 window.location.href = '/login.html';
                 return;
             }
 
             // Load user info and build navigation
-            var userInfo = JSON.parse(localStorage.getItem('campusops_user') || '{}');
+            var userInfo = common.getUser();
             $('#header-username').text(userInfo.username || 'User');
 
             // Build sidebar navigation based on role
-            if (typeof CampusOps !== 'undefined' && CampusOps.nav) {
-                CampusOps.nav.build(userInfo.role);
-            }
+            nav.build(userInfo.role || 'regular_user');
 
             // Load default home view
             $('#app-content-inner').load('/src/views/home.html');
@@ -90,9 +90,15 @@
 
             // Logout
             $('#btn-logout').on('click', function () {
-                localStorage.removeItem('campusops_token');
-                localStorage.removeItem('campusops_user');
-                window.location.href = '/login.html';
+                common.request({
+                    url: '/auth/logout',
+                    method: 'POST',
+                    complete: function () {
+                        localStorage.removeItem('campusops_token');
+                        localStorage.removeItem('campusops_user');
+                        window.location.href = '/login.html';
+                    }
+                });
             });
         });
     </script>

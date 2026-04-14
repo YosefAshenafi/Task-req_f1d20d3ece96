@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Seeder;
+use think\facade\Db;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,8 +16,7 @@ class DatabaseSeeder extends Seeder
 
     private function seedRoles(): void
     {
-        $roles = $this->table('roles');
-        $roles->insert([
+        $roles = [
             [
                 'name' => 'administrator',
                 'description' => 'Full system access, user management, export controls, refund approvals',
@@ -68,7 +68,11 @@ class DatabaseSeeder extends Seeder
                     'violations.appeal'
                 ]),
             ],
-        ])->saveData();
+        ];
+
+        foreach ($roles as $role) {
+            $this->upsertBy('roles', ['name' => $role['name']], $role);
+        }
     }
 
     private function seedUsers(): void
@@ -76,7 +80,6 @@ class DatabaseSeeder extends Seeder
         // All test users use password: "CampusOps1" (meets 10-char minimum)
         $testPassword = 'CampusOps1';
 
-        $users = [];
         $userDefs = [
             ['username' => 'admin', 'role' => 'administrator'],
             ['username' => 'ops_staff1', 'role' => 'operations_staff'],
@@ -90,9 +93,10 @@ class DatabaseSeeder extends Seeder
             ['username' => 'user5', 'role' => 'regular_user'],
         ];
 
+        $userIds = [];
         foreach ($userDefs as $def) {
             $salt = bin2hex(random_bytes(16));
-            $users[] = [
+            $userData = [
                 'username' => $def['username'],
                 'password_hash' => password_hash($testPassword . $salt, PASSWORD_BCRYPT),
                 'salt' => $salt,
@@ -100,27 +104,29 @@ class DatabaseSeeder extends Seeder
                 'status' => 'active',
                 'failed_attempts' => 0,
             ];
-        }
 
-        $this->table('users')->insert($users)->saveData();
+            $userIds[] = $this->upsertBy('users', ['username' => $def['username']], $userData);
+        }
 
         // Create user preferences for all users
         $prefs = [];
-        for ($i = 1; $i <= 10; $i++) {
+        foreach ($userIds as $userId) {
             $prefs[] = [
-                'user_id' => $i,
+                'user_id' => $userId,
                 'arrival_reminders' => 1,
                 'activity_alerts' => 1,
                 'order_alerts' => 1,
             ];
         }
-        $this->table('user_preferences')->insert($prefs)->saveData();
+
+        foreach ($prefs as $pref) {
+            $this->upsertBy('user_preferences', ['user_id' => $pref['user_id']], $pref);
+        }
     }
 
     private function seedViolationRules(): void
     {
-        $rules = $this->table('violation_rules');
-        $rules->insert([
+        $rules = [
             [
                 'name' => 'On-time Task Completion',
                 'description' => 'Reward for completing assigned tasks before the deadline',
@@ -156,11 +162,20 @@ class DatabaseSeeder extends Seeder
                 'category' => 'conduct',
                 'created_by' => 1,
             ],
-        ])->saveData();
+        ];
+
+        foreach ($rules as $rule) {
+            $this->upsertBy('violation_rules', ['name' => $rule['name']], $rule);
+        }
     }
 
     private function seedActivities(): void
     {
+        // Keep sample activity graph stable; only insert once.
+        if (Db::name('activity_groups')->count() > 0) {
+            return;
+        }
+
         // Create 3 activity groups
         $groups = $this->table('activity_groups');
         $groups->insert([
@@ -228,6 +243,11 @@ class DatabaseSeeder extends Seeder
 
     private function seedOrders(): void
     {
+        // Keep sample order graph stable; only insert once.
+        if (Db::name('orders')->count() > 0) {
+            return;
+        }
+
         $orders = $this->table('orders');
         $orders->insert([
             [
@@ -302,5 +322,16 @@ class DatabaseSeeder extends Seeder
             ['order_id' => 3, 'from_state' => 'ticketing', 'to_state' => 'ticketed', 'changed_by' => 2],
             ['order_id' => 3, 'from_state' => 'ticketed', 'to_state' => 'closed', 'changed_by' => 2],
         ])->saveData();
+    }
+
+    private function upsertBy(string $table, array $where, array $data): int
+    {
+        $existing = Db::name($table)->where($where)->find();
+        if ($existing) {
+            Db::name($table)->where('id', $existing['id'])->update($data);
+            return (int) $existing['id'];
+        }
+
+        return (int) Db::name($table)->insertGetId($data);
     }
 }
