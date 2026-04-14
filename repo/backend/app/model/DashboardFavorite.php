@@ -10,6 +10,6 @@ class DashboardFavorite extends Model
 
     protected $type = [
         'user_id' => 'integer',
-        'dashboard_id' => 'integer',
+        'widget_id' => 'string',
     ];
 }

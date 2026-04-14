@@ -237,11 +237,11 @@ class DatabaseSeeder extends Seeder
         // Add some signups
         $signups = $this->table('activity_signups');
         $signups->insert([
-            ['group_id' => 2, 'user_id' => 6, 'status' => 'active'],
-            ['group_id' => 2, 'user_id' => 7, 'status' => 'active'],
-            ['group_id' => 3, 'user_id' => 6, 'status' => 'active'],
-            ['group_id' => 3, 'user_id' => 8, 'status' => 'active'],
-            ['group_id' => 3, 'user_id' => 9, 'status' => 'active'],
+            ['group_id' => 2, 'user_id' => 6, 'status' => 'confirmed'],
+            ['group_id' => 2, 'user_id' => 7, 'status' => 'confirmed'],
+            ['group_id' => 3, 'user_id' => 6, 'status' => 'confirmed'],
+            ['group_id' => 3, 'user_id' => 8, 'status' => 'confirmed'],
+            ['group_id' => 3, 'user_id' => 9, 'status' => 'confirmed'],
         ])->saveData();
     }
 

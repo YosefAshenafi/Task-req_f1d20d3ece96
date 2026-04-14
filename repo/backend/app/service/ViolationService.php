@@ -10,6 +10,7 @@ use app\model\UserGroup;
 use app\model\UserGroupMember;
 use app\model\User;
 use app\model\Notification;
+use app\model\FileUpload;
 
 class ViolationService
 {
@@ -184,17 +185,22 @@ class ViolationService
         $user = User::find($data['user_id']);
         $this->updateUserPoints($user);
         $this->checkAlerts($user);
+        $this->checkGroupAlerts($user);
 
         $this->auditService->log($currentUser->id, 'violation', $violation->id, 'create', '', self::STATUS_PENDING, ['user_id' => $data['user_id'], 'rule_id' => $data['rule_id'], 'points' => $rule->points]);
         \think\facade\Log::info("Violation {$violation->id} created for user {$data['user_id']} (rule: {$data['rule_id']}, points: {$rule->points}) by user {$currentUser->id}");
 
-        if (!empty($data['evidence'])) {
-            foreach ($data['evidence'] as $file) {
+        if (!empty($data['evidence_file_ids'])) {
+            foreach ($data['evidence_file_ids'] as $fileId) {
+                $fileUpload = FileUpload::find($fileId);
+                if (!$fileUpload) {
+                    throw new \Exception("Evidence file ID {$fileId} not found or not uploaded", 400);
+                }
                 $evidence = new ViolationEvidence();
                 $evidence->violation_id = $violation->id;
-                $evidence->filename = $file['filename'] ?? '';
-                $evidence->sha256 = $file['sha256'] ?? '';
-                $evidence->file_path = $file['file_path'] ?? '';
+                $evidence->filename = $fileUpload->filename;
+                $evidence->sha256 = $fileUpload->sha256;
+                $evidence->file_path = $fileUpload->file_path;
                 $evidence->save();
             }
         }
@@ -323,6 +329,7 @@ class ViolationService
         if ($newStatus === self::STATUS_REJECTED) {
             $user = User::find($violation->user_id);
             $this->updateUserPoints($user);
+            $this->checkGroupAlerts($user);
         }
     }
 
@@ -350,6 +357,49 @@ class ViolationService
             $this->createAlert($user, 50);
         } elseif ($total >= self::ALERT_THRESHOLD_25) {
             $this->createAlert($user, 25);
+        }
+    }
+
+    /**
+     * Check group-level alert thresholds and notify admins.
+     */
+    protected function checkGroupAlerts(User $user): void
+    {
+        $groupIds = UserGroupMember::where('user_id', $user->id)->column('group_id');
+
+        foreach ($groupIds as $groupId) {
+            $memberIds = UserGroupMember::where('group_id', $groupId)->column('user_id');
+            $groupTotal = Violation::whereIn('user_id', $memberIds)
+                ->where('status', '!=', self::STATUS_REJECTED)
+                ->sum('points');
+
+            $threshold = null;
+            if ($groupTotal >= self::ALERT_THRESHOLD_50) {
+                $threshold = 50;
+            } elseif ($groupTotal >= self::ALERT_THRESHOLD_25) {
+                $threshold = 25;
+            }
+
+            if ($threshold !== null) {
+                $body = "Group {$groupId} has reached {$threshold} violation points (total: {$groupTotal}).";
+
+                $existing = Notification::where('type', 'group_violation_alert')
+                    ->where('body', $body)
+                    ->find();
+                if ($existing) {
+                    continue;
+                }
+
+                $adminIds = User::where('role', 'administrator')->column('id');
+                foreach ($adminIds as $adminId) {
+                    $notification = new Notification();
+                    $notification->user_id = $adminId;
+                    $notification->type = 'group_violation_alert';
+                    $notification->title = "Group Violation Alert: {$threshold} Points";
+                    $notification->body = $body;
+                    $notification->save();
+                }
+            }
         }
     }
 

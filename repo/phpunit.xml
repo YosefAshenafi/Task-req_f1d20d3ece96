@@ -7,6 +7,14 @@
          failOnRisky="false"
          failOnWarning="false"
 >
+    <php>
+        <env name="DB_TYPE" value="mysql"/>
+        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_NAME" value="campusops_test"/>
+        <env name="DB_USER" value="root"/>
+        <env name="DB_PASS" value=""/>
+        <env name="DB_PORT" value="3306"/>
+    </php>
     <testsuites>
         <testsuite name="unit">
             <directory>unit_tests</directory>

@@ -11,7 +11,7 @@ class CreateActivitySignupsTable extends Migrator
         $table
             ->addColumn('group_id', 'integer', ['null' => false, 'signed' => false])
             ->addColumn('user_id', 'integer', ['null' => false, 'signed' => false])
-            ->addColumn('status', 'string', ['limit' => 30, 'null' => false, 'default' => 'active', 'comment' => 'active, pending_acknowledgement, canceled'])
+            ->addColumn('status', 'string', ['limit' => 30, 'null' => false, 'default' => 'confirmed', 'comment' => 'confirmed, pending_acknowledgement, cancelled'])
             ->addColumn('acknowledged_at', 'timestamp', ['null' => true])
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->addIndex(['group_id'])

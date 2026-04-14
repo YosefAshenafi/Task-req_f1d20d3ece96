@@ -123,8 +123,10 @@ class SearchService
             'delayed' => ['late', 'overdue', 'exception'],
         ];
 
+        $pinyinSearch = PinyinService::toPinyin($query);
+
         $queryLower = strtolower($query);
-        $expandedTerms = [$query, $tokenized];
+        $expandedTerms = [$query, $tokenized, $pinyinSearch];
         foreach ($synonyms as $term => $synonymList) {
             if (strpos($queryLower, $term) !== false) {
                 $expandedTerms = array_merge($expandedTerms, $synonymList);
@@ -137,6 +139,7 @@ class SearchService
                     $q->whereOr('title', 'like', "%{$term}%");
                     $q->whereOr('body', 'like', "%{$term}%");
                     $q->whereOr('normalized_text', 'like', "%{$term}%");
+                    $q->whereOr('pinyin_text', 'like', "%{$term}%");
                 }
             });
 
@@ -160,6 +163,8 @@ class SearchService
             $list[] = $formatted;
         }
 
+        $didYouMean = $this->getDidYouMean($query);
+
         return [
             'list' => $list,
             'total' => $total,
@@ -167,6 +172,7 @@ class SearchService
             'limit' => $limit,
             'query' => $query,
             'sort' => $sort,
+            'did_you_mean' => $didYouMean,
         ];
     }
 

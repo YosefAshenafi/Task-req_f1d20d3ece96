@@ -399,7 +399,14 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
                         html += '<p><strong>v' + log.from_version + ' → v' + log.to_version + '</strong> (' + common.formatDateTime(log.created_at) + ')</p>';
                         var changes = log.changes;
                         for (var key in changes) {
-                            html += '<div style="padding-left:20px;">' + key + ': ' + JSON.stringify(changes[key].old) + ' → ' + JSON.stringify(changes[key].new) + '</div>';
+                            var oldVal = typeof changes[key].old === 'object' ? JSON.stringify(changes[key].old) : changes[key].old;
+                            var newVal = typeof changes[key].new === 'object' ? JSON.stringify(changes[key].new) : changes[key].new;
+                            html += '<div class="changelog-field">';
+                            html += '<span class="field-name">' + key + ':</span>';
+                            html += '<span class="changelog-old">' + oldVal + '</span>';
+                            html += '<span class="changelog-arrow">&rarr;</span>';
+                            html += '<span class="changelog-new">' + newVal + '</span>';
+                            html += '</div>';
                         }
                     }
                     if (!html) html = 'No changes yet';

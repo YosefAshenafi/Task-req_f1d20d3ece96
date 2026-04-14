@@ -125,6 +125,13 @@
 .points-yellow { color: #FFB800; }
 .points-red { color: #FF5722; }
 
+/* ===== Change Log Diff Highlights ===== */
+.changelog-field { margin-bottom: 8px; padding: 6px 10px; border-radius: 4px; }
+.changelog-field .field-name { font-weight: bold; margin-right: 8px; }
+.changelog-old { background: #fde8e8; color: #9b1c1c; text-decoration: line-through; padding: 2px 4px; border-radius: 2px; }
+.changelog-new { background: #def7ec; color: #03543f; padding: 2px 4px; border-radius: 2px; }
+.changelog-arrow { margin: 0 6px; color: #6b7280; }
+
 /* ===== Utility ===== */
 .text-center { text-align: center; }
 .text-muted { color: #999; }

@@ -1,19 +1,1053 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/phpunit.xml" tests="11" assertions="14" errors="0" failures="0" skipped="0" time="1.894470">
-    <testsuite name="unit" tests="11" assertions="14" errors="0" failures="0" skipped="0" time="1.894470">
-      <testsuite name="tests\services\AuthServiceTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" tests="11" assertions="14" errors="0" failures="0" skipped="0" time="1.894470">
-        <testcase name="testIsLockedReturnsTrueWhenLockedInFuture" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="57" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.001242"/>
-        <testcase name="testIsLockedReturnsFalseWhenLockedInPast" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="65" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.000124"/>
-        <testcase name="testRecordFailedAttemptIncrementsCounter" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="100" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.000158"/>
-        <testcase name="testIsLockedReturnsFalseWhenNotLocked" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="49" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.000072"/>
-        <testcase name="testResetFailedAttemptsClearsLock" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="108" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="2" time="0.000248"/>
-        <testcase name="testPasswordHashUsesBcryptAlgorithm" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="73" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.191481"/>
-        <testcase name="testSaltIs32HexCharacters" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="81" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.191515"/>
-        <testcase name="testVerifyPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="12" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.376728"/>
-        <testcase name="testVerifyPasswordReturnsFalseForWrongPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="25" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.379082"/>
-        <testcase name="testSetPasswordHashesPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="37" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="3" time="0.376795"/>
-        <testcase name="testDifferentSaltPerPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="89" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.377025"/>
+  <testsuite name="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/phpunit.xml" tests="60" assertions="16" errors="48" failures="1" skipped="0" time="2.065490">
+    <testsuite name="unit" tests="37" assertions="14" errors="26" failures="0" skipped="0" time="2.030912">
+      <testsuite name="tests\services\ActivityServiceTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php" tests="5" assertions="0" errors="5" failures="0" skipped="0" time="0.000000">
+        <testcase name="testListActivitiesReturnsOneRowPerGroupWhenMultipleVersionsExist" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php" line="36" class="tests\services\ActivityServiceTest" classname="tests.services.ActivityServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ActivityServiceTest::testListActivitiesReturnsOneRowPerGroupWhenMultipleVersionsExist
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1346
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:413
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:238
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testListActivitiesLatestVersionIsShown" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php" line="80" class="tests\services\ActivityServiceTest" classname="tests.services.ActivityServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ActivityServiceTest::testListActivitiesLatestVersionIsShown
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1346
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:413
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:238
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testGetActivityReturnsMostRecentPublishedVersion" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php" line="127" class="tests\services\ActivityServiceTest" classname="tests.services.ActivityServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ActivityServiceTest::testGetActivityReturnsMostRecentPublishedVersion
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1346
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:413
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:238
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testGetActivitySetsPendingDraftFlagWhenNewerDraftExists" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php" line="164" class="tests\services\ActivityServiceTest" classname="tests.services.ActivityServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ActivityServiceTest::testGetActivitySetsPendingDraftFlagWhenNewerDraftExists
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1346
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:413
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:238
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testGetActivityHasPendingDraftIsFalseWhenNoDraftExists" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php" line="199" class="tests\services\ActivityServiceTest" classname="tests.services.ActivityServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ActivityServiceTest::testGetActivityHasPendingDraftIsFalseWhenNoDraftExists
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1346
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:413
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:238
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ActivityServiceTest.php:23</error>
+        </testcase>
+      </testsuite>
+      <testsuite name="tests\services\AuthServiceTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" tests="11" assertions="14" errors="0" failures="0" skipped="0" time="1.994275">
+        <testcase name="testIsLockedReturnsFalseWhenNotLocked" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="49" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.000872"/>
+        <testcase name="testIsLockedReturnsFalseWhenLockedInPast" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="65" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.000204"/>
+        <testcase name="testRecordFailedAttemptIncrementsCounter" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="100" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.000424"/>
+        <testcase name="testResetFailedAttemptsClearsLock" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="108" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="2" time="0.000217"/>
+        <testcase name="testIsLockedReturnsTrueWhenLockedInFuture" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="57" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.000311"/>
+        <testcase name="testSaltIs32HexCharacters" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="81" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.218359"/>
+        <testcase name="testPasswordHashUsesBcryptAlgorithm" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="73" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.203008"/>
+        <testcase name="testVerifyPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="12" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.415350"/>
+        <testcase name="testDifferentSaltPerPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="89" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.389526"/>
+        <testcase name="testSetPasswordHashesPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="37" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="3" time="0.376980"/>
+        <testcase name="testVerifyPasswordReturnsFalseForWrongPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/AuthServiceTest.php" line="25" class="tests\services\AuthServiceTest" classname="tests.services.AuthServiceTest" assertions="1" time="0.389023"/>
+      </testsuite>
+      <testsuite name="tests\services\OrderServiceTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" tests="10" assertions="0" errors="10" failures="0" skipped="0" time="0.000000">
+        <testcase name="testCancelThrowsWhenOrderIsTicketed" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="36" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCancelThrowsWhenOrderIsTicketed
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testCancelThrowsWhenOrderIsClosed" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="47" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCancelThrowsWhenOrderIsClosed
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testCancelSucceedsForPlacedOrder" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="58" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCancelSucceedsForPlacedOrder
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testRefundThrowsWhenCallerIsNotAdministrator" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="72" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testRefundThrowsWhenCallerIsNotAdministrator
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testRefundSucceedsForAdministrator" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="83" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testRefundSucceedsForAdministrator
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testCloseThrowsWhenOrderIsNotTicketed" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="97" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCloseThrowsWhenOrderIsNotTicketed
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testCloseSucceedsForTicketedOrder" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="108" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCloseSucceedsForTicketedOrder
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testCancelBySystemSetsStateToCanceled" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="122" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCancelBySystemSetsStateToCanceled
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testCancelBySystemWritesHistoryWithChangedByZero" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="132" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCancelBySystemWritesHistoryWithChangedByZero
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+        <testcase name="testCancelBySystemThrowsWhenOrderIsNotPendingPayment" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php" line="147" class="tests\services\OrderServiceTest" classname="tests.services.OrderServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\OrderServiceTest::testCancelBySystemThrowsWhenOrderIsNotPendingPayment
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/OrderServiceTest.php:23</error>
+        </testcase>
+      </testsuite>
+      <testsuite name="tests\services\SearchServiceTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php" tests="6" assertions="0" errors="6" failures="0" skipped="0" time="0.036637">
+        <testcase name="testSearchWithSqlInjectionQueryReturnsValidArray" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php" line="35" class="tests\services\SearchServiceTest" classname="tests.services.SearchServiceTest" assertions="0" time="0.006964">
+          <error type="think\db\exception\PDOException">tests\services\SearchServiceTest::testSearchWithSqlInjectionQueryReturnsValidArray
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1242
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1288
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:35
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:51
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/app/service/SearchService.php:85
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php:37</error>
+        </testcase>
+        <testcase name="testSearchWithDropTablePayloadReturnsValidArray" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php" line="44" class="tests\services\SearchServiceTest" classname="tests.services.SearchServiceTest" assertions="0" time="0.006063">
+          <error type="think\db\exception\PDOException">tests\services\SearchServiceTest::testSearchWithDropTablePayloadReturnsValidArray
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1242
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1288
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:35
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:51
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/app/service/SearchService.php:85
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php:46</error>
+        </testcase>
+        <testcase name="testSearchWithWildcardPayloadDoesNotThrow" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php" line="52" class="tests\services\SearchServiceTest" classname="tests.services.SearchServiceTest" assertions="0" time="0.005842">
+          <error type="think\db\exception\PDOException">tests\services\SearchServiceTest::testSearchWithWildcardPayloadDoesNotThrow
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1242
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1288
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:35
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:51
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/app/service/SearchService.php:85
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php:54</error>
+        </testcase>
+        <testcase name="testSearchWithSingleQuoteInQueryDoesNotThrow" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php" line="60" class="tests\services\SearchServiceTest" classname="tests.services.SearchServiceTest" assertions="0" time="0.006411">
+          <error type="think\db\exception\PDOException">tests\services\SearchServiceTest::testSearchWithSingleQuoteInQueryDoesNotThrow
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1242
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1288
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:35
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/AggregateQuery.php:51
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/app/service/SearchService.php:85
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php:62</error>
+        </testcase>
+        <testcase name="testCleanupRemovesOrphanedIndexEntriesOlderThan7Days" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php" line="71" class="tests\services\SearchServiceTest" classname="tests.services.SearchServiceTest" assertions="0" time="0.006109">
+          <error type="think\db\exception\PDOException">tests\services\SearchServiceTest::testCleanupRemovesOrphanedIndexEntriesOlderThan7Days
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:500
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/Model.php:660
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/Model.php:801
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/Model.php:621
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php:84</error>
+        </testcase>
+        <testcase name="testCleanupDoesNotRemoveRecentOrphanedEntries" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php" line="92" class="tests\services\SearchServiceTest" classname="tests.services.SearchServiceTest" assertions="0" time="0.005248">
+          <error type="think\db\exception\PDOException">tests\services\SearchServiceTest::testCleanupDoesNotRemoveRecentOrphanedEntries
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:500
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/Model.php:660
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/Model.php:801
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/Model.php:621
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/SearchServiceTest.php:104</error>
+        </testcase>
+      </testsuite>
+      <testsuite name="tests\services\ViolationServiceTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php" tests="5" assertions="0" errors="5" failures="0" skipped="0" time="0.000000">
+        <testcase name="testListViolationsForRegularUserReturnsOnlyOwnViolations" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php" line="50" class="tests\services\ViolationServiceTest" classname="tests.services.ViolationServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ViolationServiceTest::testListViolationsForRegularUserReturnsOnlyOwnViolations
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:133
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:25</error>
+        </testcase>
+        <testcase name="testListViolationsForAdminReturnsAll" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php" line="67" class="tests\services\ViolationServiceTest" classname="tests.services.ViolationServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ViolationServiceTest::testListViolationsForAdminReturnsAll
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:133
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:25</error>
+        </testcase>
+        <testcase name="testGetViolationThrows403ForRegularUserAccessingOthersViolation" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php" line="82" class="tests\services\ViolationServiceTest" classname="tests.services.ViolationServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ViolationServiceTest::testGetViolationThrows403ForRegularUserAccessingOthersViolation
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:133
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:25</error>
+        </testcase>
+        <testcase name="testGetViolationSucceedsForOwner" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php" line="93" class="tests\services\ViolationServiceTest" classname="tests.services.ViolationServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ViolationServiceTest::testGetViolationSucceedsForOwner
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:133
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:25</error>
+        </testcase>
+        <testcase name="testGetViolationSucceedsForAdministrator" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php" line="103" class="tests\services\ViolationServiceTest" classname="tests.services.ViolationServiceTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\services\ViolationServiceTest::testGetViolationSucceedsForAdministrator
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:133
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/unit_tests/services/ViolationServiceTest.php:25</error>
+        </testcase>
+      </testsuite>
+    </testsuite>
+    <testsuite name="api" tests="18" assertions="2" errors="17" failures="1" skipped="0" time="0.034578">
+      <testsuite name="tests\api\AuthApiTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" tests="10" assertions="2" errors="9" failures="1" skipped="0" time="0.034578">
+        <testcase name="testLoginThrowsForDisabledAccount" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="34" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.003285">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testLoginThrowsForDisabledAccount
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:36</error>
+        </testcase>
+        <testcase name="testLoginThrowsForLockedAccount" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="44" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.003527">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testLoginThrowsForLockedAccount
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:46</error>
+        </testcase>
+        <testcase name="testLoginReturnsUserAndTokenOnSuccess" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="55" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.003230">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testLoginReturnsUserAndTokenOnSuccess
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:57</error>
+        </testcase>
+        <testcase name="testLoginIncrementsFailedAttemptsOnWrongPassword" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="69" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.002921">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testLoginIncrementsFailedAttemptsOnWrongPassword
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:71</error>
+        </testcase>
+        <testcase name="testLoginLocksAfterFiveFailedAttempts" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="82" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.003283">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testLoginLocksAfterFiveFailedAttempts
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:84</error>
+        </testcase>
+        <testcase name="testLogoutInvalidatesSession" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="93" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.002932">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testLogoutInvalidatesSession
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:95</error>
+        </testcase>
+        <testcase name="testValidateTokenReturnsUserForValidToken" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="104" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.003375">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testValidateTokenReturnsUserForValidToken
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:106</error>
+        </testcase>
+        <testcase name="testValidateTokenReturnsNullForInvalidToken" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="115" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.003255">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testValidateTokenReturnsNullForInvalidToken
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/app/model/Session.php:32
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/app/service/AuthService.php:94
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:117</error>
+        </testcase>
+        <testcase name="testUnlockAccountResetsFailedAttempts" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="122" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="0" time="0.003489">
+          <error type="think\db\exception\PDOException">tests\api\AuthApiTest::testUnlockAccountResetsFailedAttempts
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:103
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:922
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:736
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:921
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1469
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:138
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php:124</error>
+        </testcase>
+        <testcase name="testLoginReturnsInvalidCredentialsForUnknownUser" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/AuthApiTest.php" line="26" class="tests\api\AuthApiTest" classname="tests.api.AuthApiTest" assertions="2" time="0.005283">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">tests\api\AuthApiTest::testLoginReturnsInvalidCredentialsForUnknownUser
+Failed asserting that 10501 is equal to expected exception code 401.</failure>
+        </testcase>
+      </testsuite>
+      <testsuite name="tests\api\OrderApiTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php" tests="3" assertions="0" errors="3" failures="0" skipped="0" time="0.000000">
+        <testcase name="testReviewerCanListAllOrders" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php" line="39" class="tests\api\OrderApiTest" classname="tests.api.OrderApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\OrderApiTest::testReviewerCanListAllOrders
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php:115
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php:26</error>
+        </testcase>
+        <testcase name="testReviewerCanGetOrderByIdNotOwnedByThem" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php" line="52" class="tests\api\OrderApiTest" classname="tests.api.OrderApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\OrderApiTest::testReviewerCanGetOrderByIdNotOwnedByThem
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php:115
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php:26</error>
+        </testcase>
+        <testcase name="testRegularUserCannotSeeOtherUsersOrders" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php" line="67" class="tests\api\OrderApiTest" classname="tests.api.OrderApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\OrderApiTest::testRegularUserCannotSeeOtherUsersOrders
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php:115
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/OrderApiTest.php:26</error>
+        </testcase>
+      </testsuite>
+      <testsuite name="tests\api\RbacApiTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php" tests="5" assertions="0" errors="5" failures="0" skipped="0" time="0.000000">
+        <testcase name="testRegularUserDoesNotHaveUsersReadPermission" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php" line="38" class="tests\api\RbacApiTest" classname="tests.api.RbacApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\RbacApiTest::testRegularUserDoesNotHaveUsersReadPermission
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:99
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:25</error>
+        </testcase>
+        <testcase name="testAdministratorHasUsersReadPermission" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php" line="47" class="tests\api\RbacApiTest" classname="tests.api.RbacApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\RbacApiTest::testAdministratorHasUsersReadPermission
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:99
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:25</error>
+        </testcase>
+        <testcase name="testRegularUserDoesNotHaveViolationRulesPermission" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php" line="56" class="tests\api\RbacApiTest" classname="tests.api.RbacApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\RbacApiTest::testRegularUserDoesNotHaveViolationRulesPermission
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:99
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:25</error>
+        </testcase>
+        <testcase name="testUnauthenticatedTokenValidationReturnsNull" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php" line="65" class="tests\api\RbacApiTest" classname="tests.api.RbacApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\RbacApiTest::testUnauthenticatedTokenValidationReturnsNull
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:99
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:25</error>
+        </testcase>
+        <testcase name="testEmptyTokenValidationReturnsNull" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php" line="73" class="tests\api\RbacApiTest" classname="tests.api.RbacApiTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\api\RbacApiTest::testEmptyTokenValidationReturnsNull
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:99
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/API_tests/RbacApiTest.php:25</error>
+        </testcase>
+      </testsuite>
+    </testsuite>
+    <testsuite name="e2e" tests="5" assertions="0" errors="5" failures="0" skipped="0" time="0.000000">
+      <testsuite name="tests\e2e\AuthFlowTest" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php" tests="5" assertions="0" errors="5" failures="0" skipped="0" time="0.000000">
+        <testcase name="testFullAuthLifecycle" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php" line="37" class="tests\e2e\AuthFlowTest" classname="tests.e2e.AuthFlowTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\e2e\AuthFlowTest::testFullAuthLifecycle
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php:25</error>
+        </testcase>
+        <testcase name="testMultipleUserSessions" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php" line="63" class="tests\e2e\AuthFlowTest" classname="tests.e2e.AuthFlowTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\e2e\AuthFlowTest::testMultipleUserSessions
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php:25</error>
+        </testcase>
+        <testcase name="testLoginFailureIncrementSecurity" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php" line="88" class="tests\e2e\AuthFlowTest" classname="tests.e2e.AuthFlowTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\e2e\AuthFlowTest::testLoginFailureIncrementSecurity
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php:25</error>
+        </testcase>
+        <testcase name="testAccountRecoveryAfterLockout" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php" line="109" class="tests\e2e\AuthFlowTest" classname="tests.e2e.AuthFlowTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\e2e\AuthFlowTest::testAccountRecoveryAfterLockout
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php:25</error>
+        </testcase>
+        <testcase name="testRoleBasedAccessInSession" file="/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php" line="127" class="tests\e2e\AuthFlowTest" classname="tests.e2e.AuthFlowTest" assertions="0" time="0.000000">
+          <error type="think\db\exception\PDOException">tests\e2e\AuthFlowTest::testRoleBasedAccessInSession
+think\db\exception\PDOException: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for mysql failed: nodename nor servname provided, or not known
+
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:836
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/connector/Mysql.php:68
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:438
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:395
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:360
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:424
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:513
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:60
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/concern/TableFieldInfo.php:84
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseBuilder.php:220
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/Builder.php:222
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/builder/Mysql.php:311
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/PDOConnection.php:1191
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/backend/vendor/topthink/think-orm/src/db/BaseQuery.php:1410
+/Users/yosef/Documents/Projects/Eaglepoint/campusops/repo/e2e_tests/AuthFlowTest.php:25</error>
+        </testcase>
       </testsuite>
     </testsuite>
   </testsuite>
