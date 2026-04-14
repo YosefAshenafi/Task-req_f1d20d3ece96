@@ -108,24 +108,46 @@ class ExportController
         return $flat;
     }
 
+    /**
+     * GET /api/v1/export/download
+     * Serve an export file for download.
+     */
+    public function download(Request $request): Response
+    {
+        $filename = $request->get('file', '');
+        if (empty($filename)) {
+            return json(['success' => false, 'code' => 400, 'error' => 'File parameter required'], 400);
+        }
+
+        // Sanitize: only allow basename, prevent directory traversal
+        $filename = basename($filename);
+        $filepath = runtime_path() . '/exports/' . $filename;
+
+        if (!file_exists($filepath)) {
+            return json(['success' => false, 'code' => 404, 'error' => 'Export file not found'], 404);
+        }
+
+        return download($filepath, $filename);
+    }
+
     protected function downloadResponse(string $filepath, string $name, string $format): Response
     {
         $ext = match($format) {
             'png' => 'png',
-            'pdf' => 'html',
-            default => 'csv',
+            'pdf' => 'pdf',
+            default => 'xlsx',
         };
         $contentType = match($format) {
             'png' => 'image/png',
-            'pdf' => 'text/html',
-            default => 'text/csv',
+            'pdf' => 'application/pdf',
+            default => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         };
 
         return json([
             'success' => true,
             'code' => 200,
             'data' => [
-                'file' => $filepath,
+                'file' => basename($filepath),
                 'format' => $format,
                 'download_url' => '/api/v1/export/download?file=' . urlencode(basename($filepath)),
             ],

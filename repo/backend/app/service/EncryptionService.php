@@ -9,7 +9,11 @@ class EncryptionService
     public static function getKey(): string
     {
         if (empty(self::$key)) {
-            self::$key = env('ENCRYPTION_KEY', 'default-key-change-in-production');
+            $key = env('ENCRYPTION_KEY', env('APP_KEY', ''));
+            if (empty($key) || $key === 'campusops_app_key_change_me' || $key === 'default-key-change-in-production') {
+                throw new \RuntimeException('ENCRYPTION_KEY is not configured. Set a secure APP_KEY in .env');
+            }
+            self::$key = $key;
         }
         return self::$key;
     }

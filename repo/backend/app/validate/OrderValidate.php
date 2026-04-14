@@ -25,4 +25,9 @@ class OrderValidate extends Validate
         'amount.number' => 'Amount must be a number',
         'ticket_number.max' => 'Ticket number cannot exceed 50 characters',
     ];
+
+    protected $scene = [
+        'create' => ['activity_id', 'items', 'notes', 'payment_method', 'amount'],
+        'update' => ['items', 'notes'],
+    ];
 }

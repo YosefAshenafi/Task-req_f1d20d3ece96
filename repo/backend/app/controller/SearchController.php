@@ -17,6 +17,7 @@ class SearchController
 
     /**
      * GET /api/v1/search
+     * Supports: q, type, page, limit, sort (recency|popularity|relevance), highlight (0|1)
      */
     public function index(Request $request): Response
     {
@@ -24,13 +25,18 @@ class SearchController
         $type = $request->get('type', '');
         $page = (int) $request->get('page', 1);
         $limit = (int) $request->get('limit', 20);
+        $sort = $request->get('sort', 'relevance');
+        $highlight = (bool) $request->get('highlight', 1);
+        $author = $request->get('author', '');
+        $tags = $request->get('tags', '');
+        $replyCountMin = (int) $request->get('reply_count_min', 0);
 
         if (strlen($query) < 2) {
             return json(['success' => true, 'code' => 200, 'data' => ['list' => [], 'total' => 0]]);
         }
 
-        $result = $this->searchService->search($query, $type, $page, $limit);
-        
+        $result = $this->searchService->search($query, $type, $page, $limit, $sort, $highlight, $author, $tags, $replyCountMin);
+
         return json(['success' => true, 'code' => 200, 'data' => $result]);
     }
 
@@ -53,15 +59,17 @@ class SearchController
 
     /**
      * GET /api/v1/search/logistics
+     * Logistics-specific search with tracking number tokenization and synonym handling.
      */
     public function logistics(Request $request): Response
     {
         $query = $request->get('q', '');
         $page = (int) $request->get('page', 1);
         $limit = (int) $request->get('limit', 20);
+        $sort = $request->get('sort', 'recency');
 
-        $result = $this->searchService->search($query, 'order', $page, $limit);
-        
+        $result = $this->searchService->searchLogistics($query, $page, $limit, $sort);
+
         return json(['success' => true, 'code' => 200, 'data' => $result]);
     }
 

@@ -329,16 +329,36 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
         },
 
         /**
-         * Cancel signup.
+         * Cancel signup - finds the user's signup_id first, then sends DELETE with it.
          */
         cancelSignup: function (id) {
             var that = this;
+            var userInfo = common.getUser();
+            // First fetch signups to find the user's own signup_id
             common.request({
                 url: '/activities/' + id + '/signups',
-                method: 'DELETE',
                 success: function (res) {
-                    layer.msg('Signup cancelled', { icon: 1 });
-                    that.showDetail(id);
+                    if (res.success && res.data) {
+                        var mySignup = null;
+                        for (var i = 0; i < res.data.length; i++) {
+                            if (res.data[i].user_id === userInfo.id) {
+                                mySignup = res.data[i];
+                                break;
+                            }
+                        }
+                        if (mySignup) {
+                            common.request({
+                                url: '/activities/' + id + '/signups/' + mySignup.id,
+                                method: 'DELETE',
+                                success: function () {
+                                    layer.msg('Signup cancelled', { icon: 1 });
+                                    that.showDetail(id);
+                                }
+                            });
+                        } else {
+                            layer.msg('No active signup found', { icon: 2 });
+                        }
+                    }
                 }
             });
         },

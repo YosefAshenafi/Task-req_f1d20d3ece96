@@ -9,7 +9,13 @@
 >
     <testsuites>
         <testsuite name="unit">
-            <file>unit_tests/services/AuthServiceTest.php</file>
+            <directory>unit_tests</directory>
+        </testsuite>
+        <testsuite name="api">
+            <directory>API_tests</directory>
+        </testsuite>
+        <testsuite name="e2e">
+            <directory>e2e_tests</directory>
         </testsuite>
     </testsuites>
     <source>

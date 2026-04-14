@@ -102,12 +102,12 @@
         violations: '<div class="layui-card"><div class="layui-card-header">Violations</div><div class="layui-card-body"><table class="layui-table"><thead><tr><th>ID</th><th>User</th><th>Rule</th><th>Points</th><th>Status</th><th>Created</th></tr></thead><tbody id="violations-tbody"></tbody></table></div></div>',
         search: '<div class="layui-card"><div class="layui-card-header">Global Search</div><div class="layui-card-body"><div class="search-box"><input type="text" id="search-input" placeholder="Search activities, orders, users..."> <button class="add-btn" id="btn-search">Search</button></div><div id="search-results"></div></div></div>',
         audit: '<div class="layui-card"><div class="layui-card-header">Audit Log</div><div class="layui-card-body"><table class="layui-table"><thead><tr><th>ID</th><th>User</th><th>Action</th><th>Entity</th><th>Time</th></tr></thead><tbody id="audit-tbody"></tbody></table></div></div>',
-        shipments: '<div class="layui-card"><div class="layui-card-header">Shipments</div><div class="layui-card-body"><p class="empty">No shipments yet</p></div></div>',
-        tasks: '<div class="layui-card"><div class="layui-card-header">Tasks</div><div class="layui-card-body"><p class="empty">No tasks yet</p></div></div>',
-        staffing: '<div class="layui-card"><div class="layui-card-header">Staffing</div><div class="layui-card-body"><p class="empty">No staffing yet</p></div></div>',
-        checklists: '<div class="layui-card"><div class="layui-card-header">Checklists</div><div class="layui-card-body"><p class="empty">No checklists yet</p></div></div>',
-        notifications: '<div class="layui-card"><div class="layui-card-header">Notifications</div><div class="layui-card-body"><p class="empty">No notifications</p></div></div>',
-        approvals: '<div class="layui-card"><div class="layui-card-header">Pending Approvals</div><div class="layui-card-body"><p class="empty">No pending approvals</p></div></div>'
+        shipments: '<div class="layui-card"><div class="layui-card-header"><span>Shipments</span></div><div class="layui-card-body"><div style="margin-bottom:15px;display:flex;gap:10px;"><input type="text" id="filter-order-id" class="layui-input" placeholder="Order ID" style="width:150px;"> <select id="filter-status" class="layui-input" style="width:150px;"><option value="">All Status</option><option value="created">Created</option><option value="in_transit">In Transit</option><option value="delivered">Delivered</option><option value="exception">Exception</option></select> <button class="add-btn" id="btn-search">Search</button></div><table class="layui-table"><thead><tr><th>ID</th><th>Order</th><th>Tracking</th><th>Carrier</th><th>Status</th><th>Origin</th><th>Destination</th><th>Created</th><th>Actions</th></tr></thead><tbody id="shipments-tbody"></tbody></table><div id="shipments-pagination"></div></div></div>',
+        tasks: '<div class="layui-card"><div class="layui-card-header"><span>Tasks</span><button class="add-btn" id="btn-add-task" style="float:right;">+ Add Task</button></div><div class="layui-card-body"><table class="layui-table"><thead><tr><th>ID</th><th>Title</th><th>Assignee</th><th>Status</th><th>Due Date</th><th>Actions</th></tr></thead><tbody id="tasks-tbody"></tbody></table></div></div>',
+        staffing: '<div class="layui-card"><div class="layui-card-header"><span>Staffing</span></div><div class="layui-card-body"><table class="layui-table"><thead><tr><th>ID</th><th>Activity</th><th>User</th><th>Role</th><th>Status</th><th>Created</th></tr></thead><tbody id="staffing-tbody"></tbody></table></div></div>',
+        checklists: '<div class="layui-card"><div class="layui-card-header"><span>Checklists</span></div><div class="layui-card-body"><table class="layui-table"><thead><tr><th>ID</th><th>Title</th><th>Items</th><th>Progress</th><th>Created</th><th>Actions</th></tr></thead><tbody id="checklists-tbody"></tbody></table></div></div>',
+        notifications: '<div class="layui-card"><div class="layui-card-header"><span>Notifications</span></div><div class="layui-card-body"><div id="notifications-list"></div></div></div>',
+        approvals: '<div class="layui-card"><div class="layui-card-header"><span>Pending Approvals</span></div><div class="layui-card-body"><table class="layui-table"><thead><tr><th>ID</th><th>Type</th><th>Requester</th><th>Details</th><th>Status</th><th>Actions</th></tr></thead><tbody id="approvals-tbody"></tbody></table></div></div>'
     };
 
     // Menus per role
@@ -168,7 +168,7 @@
         api.request({url:'/activities/'+id, success:function(r){ if(r.success) layer.open({type:1, title:r.data.title, content:'<div style="padding:20px;"><p><strong>State:</strong> '+badge(r.data.state)+'</p><p><strong>Max:</strong> '+(r.data.max_headcount||0)+'</p><hr><p>'+(r.data.body||'No description')+'</p></div>', area:['400px','300px']}); }});
     };
     window.viewOrder = function(id) {
-        api.request({url:'/orders/'+id, success:function(r){ if(r.success) layer.open({type:1, title:'Order #'+(r.data.order_number||id), content:'<div style="padding:20px;"><p><strong>Status:</strong> '+badge(r.data.status)+'</p><p><strong>Total:</strong> $'+(r.data.total||0)+'</p></div>', area:['350px','200px']}); }});
+        api.request({url:'/orders/'+id, success:function(r){ if(r.success) layer.open({type:1, title:'Order #'+id, content:'<div style="padding:20px;"><p><strong>Status:</strong> '+badge(r.data.state)+'</p><p><strong>Amount:</strong> $'+(r.data.amount||0)+'</p></div>', area:['350px','200px']}); }});
     };
 
     function bindEvents(view) {
@@ -180,14 +180,14 @@
             case 'activities': document.getElementById('btn-add-activity').onclick = function() { layer.open({type:1, title:'Create Activity', content:'<div style="padding:20px;"><input id="new-title" placeholder="Title" class="layui-input" style="margin-bottom:10px;"><textarea id="new-body" placeholder="Description" class="layui-textarea" style="margin-bottom:10px;"></textarea><input id="new-max" type="number" placeholder="Max participants" class="layui-input"></div>', btn:['Save','Cancel'], yes:function() {
                 api.request({url:'/activities', method:'POST', data:{title:document.getElementById('new-title').value, body:document.getElementById('new-body').value, max_headcount:document.getElementById('new-max').value||0, state:'draft'}, success:function(){ layer.msg('Created'); showView('activities'); }});
             }});}; break;
-            case 'orders': document.getElementById('btn-add-order').onclick = function() { layer.open({type:1, title:'Create Order', content:'<div style="padding:20px;"><input id="new-title" placeholder="Title" class="layui-input" style="margin-bottom:10px;"><input id="new-amount" type="number" placeholder="Amount" class="layui-input"></div>', btn:['Create','Cancel'], yes:function() {
-                api.request({url:'/orders', method:'POST', data:{title:document.getElementById('new-title').value, total:document.getElementById('new-amount').value||0, status:'placed'}, success:function(){ layer.msg('Created'); showView('orders'); }});
+            case 'orders': document.getElementById('btn-add-order').onclick = function() { layer.open({type:1, title:'Create Order', content:'<div style="padding:20px;"><input id="new-activity-id" type="number" placeholder="Activity ID" class="layui-input" style="margin-bottom:10px;"><input id="new-amount" type="number" placeholder="Amount" class="layui-input"></div>', btn:['Create','Cancel'], yes:function() {
+                api.request({url:'/orders', method:'POST', data:{activity_id:parseInt(document.getElementById('new-activity-id').value)||0, amount:parseFloat(document.getElementById('new-amount').value)||0}, success:function(){ layer.msg('Created'); showView('orders'); }});
             }});}; break;
             case 'search': document.getElementById('btn-search').onclick = function() {
                 var q = document.getElementById('search-input').value;
                 if(q.length>=2) api.request({url:'/search?q='+encodeURIComponent(q), success:function(r){ var el=document.getElementById('search-results'); 
                     if(r.success && r.data && r.data.list && r.data.list.length) {
-                        el.innerHTML = r.data.list.map(function(i){return '<div class="search-result-item" onclick="showView(\''+i.entity_type+'s\')"><div class="result-title">'+i.title+'</div><div class="result-type">'+i.entity_type+'</div></div>';}).join('');
+                        el.innerHTML = r.data.list.map(function(i){return '<div class="search-result-item" onclick="showView(\''+i.type+'s\')"><div class="result-title">'+i.title+'</div><div class="result-type">'+i.type+'</div></div>';}).join('');
                     } else { el.innerHTML = '<p class="empty">No results found</p>'; }
                 }});
             }; break;
@@ -256,7 +256,7 @@
                 var html = '';
                 if (r.success && r.data && r.data.list && r.data.list.length) {
                     r.data.list.forEach(function(o) { 
-                        html += '<tr><td>'+o.id+'</td><td><strong>#'+(o.order_number||o.id)+'</strong></td><td>'+badge(o.state||o.status)+'</td><td>$'+(o.total||0)+'</td><td>'+(o.created_at||'').substring(0,10)+'</td><td><button class="action-btn" onclick="viewOrder('+o.id+')">View</button></td></tr>'; 
+                        html += '<tr><td>'+o.id+'</td><td><strong>#'+o.id+'</strong></td><td>'+badge(o.state)+'</td><td>$'+(o.amount||0)+'</td><td>'+(o.created_at||'').substring(0,10)+'</td><td><button class="action-btn" onclick="viewOrder('+o.id+')">View</button></td></tr>';
                     });
                 } else { html = '<tr><td colspan="6" class="empty">No orders</td></tr>'; }
                 tb.innerHTML = html;
@@ -277,15 +277,42 @@
             return;
         }
         if (view === 'audit') {
-            api.request({url:'/audit?limit=20', success:function(r){ 
+            api.request({url:'/audit?limit=20', success:function(r){
                 var tb = document.getElementById('audit-tbody');
                 var html = '';
                 if (r.success && r.data && r.data.list && r.data.list.length) {
-                    r.data.list.forEach(function(a) { 
-                        html += '<tr><td>'+a.id+'</td><td>'+(a.username||a.user_id||'')+'</td><td>'+a.action+'</td><td>'+(a.entity_type||'')+'</td><td>'+(a.created_at||'').substring(0,19)+'</td></tr>'; 
+                    r.data.list.forEach(function(a) {
+                        html += '<tr><td>'+a.id+'</td><td>'+(a.username||a.user_id||'')+'</td><td>'+a.action+'</td><td>'+(a.entity_type||'')+'</td><td>'+(a.created_at||'').substring(0,19)+'</td></tr>';
                     });
                 } else { html = '<tr><td colspan="5" class="empty">No audit records</td></tr>'; }
                 tb.innerHTML = html;
+            }});
+            return;
+        }
+        if (view === 'shipments') {
+            api.request({url:'/shipments?limit=20', success:function(r){
+                var tb = document.getElementById('shipments-tbody');
+                var html = '';
+                if (r.success && r.data && r.data.list && r.data.list.length) {
+                    r.data.list.forEach(function(s) {
+                        html += '<tr><td>'+s.id+'</td><td>'+s.order_id+'</td><td>'+(s.tracking_number||'')+'</td><td>'+(s.carrier||'')+'</td><td>'+badge(s.status)+'</td><td>'+(s.origin||'-')+'</td><td>'+(s.destination||'-')+'</td><td>'+(s.created_at||'').substring(0,19)+'</td><td><button class="action-btn" onclick="viewOrder('+s.order_id+')">Order</button></td></tr>';
+                    });
+                } else { html = '<tr><td colspan="9" class="empty">No shipments</td></tr>'; }
+                tb.innerHTML = html;
+            }});
+            return;
+        }
+        if (view === 'notifications') {
+            api.request({url:'/notifications?limit=20', success:function(r){
+                var el = document.getElementById('notifications-list');
+                var html = '';
+                if (r.success && r.data && r.data.list && r.data.list.length) {
+                    r.data.list.forEach(function(n) {
+                        var readClass = n.read_at ? '' : 'style="font-weight:bold;background:#f0f7ff;"';
+                        html += '<div '+readClass+' style="padding:12px;border-bottom:1px solid #f0f0f0;"><div>'+n.body+'</div><div style="font-size:12px;color:#999;margin-top:5px;">'+(n.created_at||'').substring(0,19)+'</div></div>';
+                    });
+                } else { html = '<p class="empty">No notifications</p>'; }
+                el.innerHTML = html;
             }});
             return;
         }

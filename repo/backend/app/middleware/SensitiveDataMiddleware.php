@@ -27,28 +27,61 @@ class SensitiveDataMiddleware
     {
         $content = $response->getContent();
         $data = json_decode($content, true);
-        
+
         if (!$data || !isset($data['data'])) {
             return $response;
         }
 
         $entityType = $this->detectEntityType($request);
-        
+
         if (isset($data['data']) && is_array($data['data'])) {
-            $data['data'] = $this->maskFields($data['data'], $entityType);
+            $data['data'] = $this->maskRecursive($data['data'], $entityType);
         }
 
         $response->content(json_encode($data));
         return $response;
     }
 
-    protected function maskFields(array $data, string $entityType): array
+    protected function maskRecursive(array $data, string $entityType): array
     {
         $fields = self::$sensitiveFields[$entityType] ?? [];
-        
+
+        // Check if this is a list payload (e.g. data.list[*])
+        if (isset($data['list']) && is_array($data['list'])) {
+            foreach ($data['list'] as $key => $item) {
+                if (is_array($item)) {
+                    $data['list'][$key] = $this->maskFields($item, $fields);
+                }
+            }
+            return $data;
+        }
+
+        // Check if this is a numerically indexed array (direct list)
+        if (array_is_list($data)) {
+            foreach ($data as $key => $item) {
+                if (is_array($item)) {
+                    $data[$key] = $this->maskFields($item, $fields);
+                }
+            }
+            return $data;
+        }
+
+        // Single entity
+        return $this->maskFields($data, $fields);
+    }
+
+    protected function maskFields(array $data, array $fields): array
+    {
         foreach ($fields as $field) {
             if (isset($data[$field]) && !empty($data[$field])) {
                 $data[$field] = '***REDACTED***';
+            }
+        }
+
+        // Recurse into nested arrays/objects
+        foreach ($data as $key => $value) {
+            if (is_array($value) && !empty($fields)) {
+                $data[$key] = $this->maskFields($value, $fields);
             }
         }
 

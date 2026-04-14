@@ -32,8 +32,9 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
                 tracking: $('#filter-tracking').val() || ''
             };
 
+            var orderId = $('#filter-order-id').val() || '';
             common.request({
-                url: '/orders/:orderId/shipments',
+                url: orderId ? '/orders/' + orderId + '/shipments' : '/shipments',
                 data: params,
                 success: function (res) {
                     if (res.success) {

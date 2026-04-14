@@ -61,6 +61,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
         },
 
         renderViolations: function (list) {
+            var that = this;
             var $tbody = $('#violations-tbody');
             $tbody.empty();
             if (!list || list.length === 0) {

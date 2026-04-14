@@ -129,6 +129,7 @@ class ActivityController
         $data = json_decode($request->getContent(), true);
 
         try {
+            (new \app\validate\ActivityValidate())->failException(true)->scene('create')->check($data);
             $activity = $this->activityService->createActivity($data, $request->user);
             return json([
                 'success' => true,
@@ -136,6 +137,12 @@ class ActivityController
                 'data' => $activity,
                 'message' => 'Activity created successfully',
             ], 201);
+        } catch (\think\exception\ValidateException $e) {
+            return json([
+                'success' => false,
+                'code' => 422,
+                'error' => $e->getMessage(),
+            ], 422);
         } catch (\Exception $e) {
             return json([
                 'success' => false,
@@ -154,6 +161,7 @@ class ActivityController
         $data = json_decode($request->getContent(), true);
 
         try {
+            (new \app\validate\ActivityValidate())->failException(true)->scene('update')->check($data);
             $activity = $this->activityService->updateActivity($id, $data, $request->user);
             return json([
                 'success' => true,
@@ -161,6 +169,12 @@ class ActivityController
                 'data' => $activity,
                 'message' => 'Activity updated successfully',
             ]);
+        } catch (\think\exception\ValidateException $e) {
+            return json([
+                'success' => false,
+                'code' => 422,
+                'error' => $e->getMessage(),
+            ], 422);
         } catch (\Exception $e) {
             $code = $e->getCode() ?: 400;
             return json([

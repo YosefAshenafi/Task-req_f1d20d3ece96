@@ -73,6 +73,68 @@ layui.define(['jquery', 'layer', 'common'], function (exports) {
             }
             html += '</tbody></table>';
             $container.html(html);
+        },
+
+        favoriteWidget: function (widgetId) {
+            common.request({
+                url: '/dashboard/favorites',
+                method: 'POST',
+                data: { widget_id: widgetId },
+                success: function (res) {
+                    if (res.success) {
+                        layer.msg('Widget "' + widgetId + '" added to favorites');
+                        // Update button state if rendered
+                        var $btn = $('[data-widget-id="' + widgetId + '"] .fav-btn');
+                        if ($btn.length) $btn.text('★ Favorited').addClass('favorited');
+                    }
+                }
+            });
+        },
+
+        unfavoriteWidget: function (widgetId) {
+            common.request({
+                url: '/dashboard/favorites/' + encodeURIComponent(widgetId),
+                method: 'DELETE',
+                success: function (res) {
+                    if (res.success) {
+                        layer.msg('Widget "' + widgetId + '" removed from favorites');
+                        var $btn = $('[data-widget-id="' + widgetId + '"] .fav-btn');
+                        if ($btn.length) $btn.text('☆ Favorite').removeClass('favorited');
+                    }
+                }
+            });
+        },
+
+        bindFavoriteButtons: function () {
+            var that = this;
+            // Load current favorites to set initial state
+            common.request({
+                url: '/dashboard/favorites',
+                success: function (res) {
+                    if (res.success && res.data) {
+                        var favIds = res.data.map(function (f) { return f.widget_id; });
+                        $('[data-widget-id]').each(function () {
+                            var wid = $(this).data('widget-id');
+                            var $btn = $(this).find('.fav-btn');
+                            if ($btn.length === 0) {
+                                $btn = $('<button class="fav-btn layui-btn layui-btn-xs" style="margin-left:8px;">☆ Favorite</button>');
+                                $(this).find('.layui-card-header').append($btn);
+                            }
+                            if (favIds.indexOf(wid) !== -1) {
+                                $btn.text('★ Favorited').addClass('favorited');
+                            }
+                            $btn.off('click').on('click', function (e) {
+                                e.stopPropagation();
+                                if ($btn.hasClass('favorited')) {
+                                    that.unfavoriteWidget(wid);
+                                } else {
+                                    that.favoriteWidget(wid);
+                                }
+                            });
+                        });
+                    }
+                }
+            });
         }
     };
 

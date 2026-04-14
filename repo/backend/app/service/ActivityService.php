@@ -385,6 +385,27 @@ class ActivityService
             throw new \Exception('Already signed up', 400);
         }
 
+        // Eligibility tag enforcement
+        // TODO: Replace role-to-tag proxy with a real profile tag system
+        $eligibilityTags = json_decode($version->eligibility_tags, true) ?: [];
+        if (!empty($eligibilityTags) && !in_array('all_students', $eligibilityTags)) {
+            $userRole = $currentUser->role ?? '';
+            $hasAccess = false;
+            foreach ($eligibilityTags as $tag) {
+                if (in_array($tag, ['cs_students', 'engineering']) && in_array($userRole, ['team_lead', 'operations_staff'])) {
+                    $hasAccess = true;
+                    break;
+                }
+                if ($tag === 'faculty' && $userRole === 'administrator') {
+                    $hasAccess = true;
+                    break;
+                }
+            }
+            if (!$hasAccess) {
+                throw new \Exception('User does not meet eligibility requirements for this activity', 403);
+            }
+        }
+
         if ($version->max_headcount > 0) {
             $count = ActivitySignup::where('group_id', $groupId)
                 ->whereIn('status', ['confirmed', 'pending_acknowledgement'])

@@ -15,6 +15,28 @@ class ShipmentService
     const STATUS_EXCEPTION = 'exception';
 
     /**
+     * List all shipments with pagination and optional status filter.
+     */
+    public function listAll(int $page = 1, int $limit = 20, string $status = ''): array
+    {
+        $query = Shipment::order('id', 'desc');
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
+        $total = $query->count();
+        $shipments = $query->page($page, $limit)->select();
+
+        return [
+            'list' => array_map(fn($s) => $this->formatShipment($s), $shipments),
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+        ];
+    }
+
+    /**
      * Get shipments by order.
      */
     public function getByOrder(int $orderId): array
@@ -181,6 +203,8 @@ class ShipmentService
             'package_contents' => json_decode($shipment->package_contents, true) ?: [],
             'weight' => $shipment->weight,
             'status' => $shipment->status,
+            'origin' => $shipment->origin ?? '',
+            'destination' => $shipment->destination ?? '',
             'created_at' => $shipment->created_at,
         ];
     }

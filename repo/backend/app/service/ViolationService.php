@@ -103,9 +103,15 @@ class ViolationService
 
     /**
      * List violations.
+     * Enforces object-level authorization: regular_user can only see their own violations.
      */
-    public function listViolations(int $page = 1, int $limit = 20, string $userId = '', string $groupId = ''): array
+    public function listViolations(int $page = 1, int $limit = 20, string $userId = '', string $groupId = '', int $currentUserId = 0, string $currentRole = ''): array
     {
+        // Object-level authorization: regular_user may only view their own violations
+        if ($currentRole === 'regular_user' && $currentUserId > 0) {
+            $userId = (string) $currentUserId;
+        }
+
         $query = Violation::order('id', 'desc');
 
         if (!empty($userId)) {
@@ -125,13 +131,19 @@ class ViolationService
 
     /**
      * Get violation by ID.
+     * Enforces object-level authorization: regular_user can only fetch their own violations.
      */
-    public function getViolation(int $id): array
+    public function getViolation(int $id, int $currentUserId = 0, string $currentRole = ''): array
     {
         $violation = Violation::find($id);
         if (!$violation) {
             throw new \Exception('Violation not found', 404);
         }
+
+        if ($currentRole === 'regular_user' && $currentUserId > 0 && $violation->user_id != $currentUserId) {
+            throw new \Exception('Access denied', 403);
+        }
+
         return $this->formatViolation($violation);
     }
 
@@ -252,11 +264,16 @@ class ViolationService
             throw new \Exception('Insufficient permissions', 403);
         }
 
+        $notes = $data['notes'] ?? '';
+        if (empty(trim($notes))) {
+            throw new \Exception('Decision notes are required', 400);
+        }
+
         $appeal = ViolationAppeal::where('violation_id', $violationId)->find();
         if ($appeal) {
             $appeal->reviewer_id = $currentUser->id;
             $appeal->decision = $data['decision'] ?? '';
-            $appeal->reviewer_notes = $data['notes'] ?? '';
+            $appeal->reviewer_notes = $notes;
             $appeal->save();
         }
     }
@@ -275,9 +292,14 @@ class ViolationService
             throw new \Exception('Insufficient permissions', 403);
         }
 
+        $notes = $data['notes'] ?? '';
+        if (empty(trim($notes))) {
+            throw new \Exception('Decision notes are required', 400);
+        }
+
         $appeal = ViolationAppeal::where('violation_id', $violationId)->find();
         if ($appeal) {
-            $appeal->final_notes = $data['notes'] ?? '';
+            $appeal->final_notes = $notes;
             $appeal->save();
         }
 

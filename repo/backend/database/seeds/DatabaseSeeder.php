@@ -35,7 +35,9 @@ class DatabaseSeeder extends Seeder
                 'permissions' => json_encode([
                     'activities.read', 'activities.create', 'activities.update',
                     'activities.publish', 'activities.transition', 'activities.signup',
-                    'orders.*', 'shipments.*', 'search.read',
+                    'orders.read', 'orders.create', 'orders.update',
+                    'orders.payment', 'orders.ticketing', 'orders.cancel', 'orders.close',
+                    'shipments.*', 'search.read',
                     'dashboard.read', 'notifications.read', 'preferences.*',
                     'uploads.create', 'files.read'
                 ]),
@@ -67,7 +69,7 @@ class DatabaseSeeder extends Seeder
                     'activities.read', 'activities.signup',
                     'orders.read', 'notifications.read', 'preferences.*',
                     'dashboard.read', 'search.read',
-                    'violations.read', 'violations.appeal'
+                    'violations.appeal'
                 ]),
             ],
         ];

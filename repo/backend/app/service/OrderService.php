@@ -80,10 +80,19 @@ class OrderService
     }
 
     /**
-     * Get order state history.
+     * Get order state history with object-level authorization.
      */
-    public function getHistory(int $orderId): array
+    public function getHistory(int $orderId, int $userId = 0, string $role = ''): array
     {
+        $order = Order::find($orderId);
+        if (!$order) {
+            throw new \Exception('Order not found', 404);
+        }
+
+        if ($role !== 'administrator' && $role !== 'operations_staff' && $role !== 'reviewer' && $order->created_by !== $userId) {
+            throw new \Exception('Access denied', 403);
+        }
+
         $history = OrderStateHistory::where('order_id', $orderId)
             ->order('id', 'desc')
             ->select();
@@ -262,8 +271,8 @@ class OrderService
             throw new \Exception('Can only refund Paid orders', 400);
         }
 
-        if (!$currentUser->hasPermission('orders.refund')) {
-            throw new \Exception('Insufficient permissions', 403);
+        if ($currentUser->role !== 'administrator') {
+            throw new \Exception('Only administrators can process refunds', 403);
         }
 
         $order->state = self::STATE_CANCELED;
@@ -288,10 +297,11 @@ class OrderService
             throw new \Exception('Cannot cancel ' . $order->state . ' order', 400);
         }
 
+        $previousState = $order->state;
         $order->state = self::STATE_CANCELED;
         $order->save();
 
-        $this->logStateChange($order->id, $order->state, self::STATE_CANCELED, $currentUser->id);
+        $this->logStateChange($order->id, $previousState, self::STATE_CANCELED, $currentUser->id);
 
         return $this->formatOrder($order);
     }
@@ -320,7 +330,7 @@ class OrderService
     }
 
     /**
-     * Update address (closed orders only, reviewer approval).
+     * Update address (closed orders require reviewer approval via request+approve flow).
      */
     public function updateAddress(int $id, array $data, $currentUser): array
     {
@@ -329,8 +339,8 @@ class OrderService
             throw new \Exception('Order not found', 404);
         }
 
-        if ($order->state !== self::STATE_CLOSED) {
-            throw new \Exception('Only closed orders can have address updated', 400);
+        if ($order->state === self::STATE_CLOSED) {
+            throw new \Exception('Closed orders require address correction through the request+approve workflow. Use POST /orders/:id/request-address-correction instead.', 400);
         }
 
         if (!$currentUser->hasPermission('orders.update')) {
@@ -349,7 +359,8 @@ class OrderService
     }
 
     /**
-     * Request address correction for closed order - requires reviewer approval.
+     * Request address correction for closed order - always requires reviewer approval.
+     * All roles submit a request; only reviewers/admins can approve via approveAddressCorrection.
      */
     public function requestAddressCorrection(int $orderId, array $newAddress, int $requesterId, string $requesterRole): array
     {
@@ -362,32 +373,32 @@ class OrderService
             return ['success' => false, 'message' => 'Only closed orders can request address correction'];
         }
 
-        if ($requesterRole === 'reviewer' || $requesterRole === 'administrator') {
-            $order->invoice_address = EncryptionService::encrypt(json_encode($newAddress));
-            $order->save();
-            $this->auditService->log($requesterId, 'order', $orderId, 'address_correction', '', '', ['direct_update' => true]);
-            return ['success' => true, 'message' => 'Address updated'];
-        }
-
         $pending = [
             'type' => 'address_correction',
             'requested_by' => $requesterId,
+            'requester_role' => $requesterRole,
             'new_address' => $newAddress,
             'status' => 'pending_review',
             'created_at' => date('Y-m-d H:i:s')
         ];
-        
+
         $order->pending_address_correction = json_encode($pending);
         $order->save();
+
+        $this->auditService->log($requesterId, 'order', $orderId, 'address_correction_requested', '', '', ['requester_role' => $requesterRole]);
 
         return ['success' => true, 'message' => 'Address correction request submitted for reviewer approval'];
     }
 
     /**
-     * Approve address correction (reviewer only).
+     * Approve address correction (reviewer/administrator only).
      */
-    public function approveAddressCorrection(int $orderId, int $reviewerId): array
+    public function approveAddressCorrection(int $orderId, int $reviewerId, string $reviewerRole): array
     {
+        if ($reviewerRole !== 'reviewer' && $reviewerRole !== 'administrator') {
+            return ['success' => false, 'message' => 'Only reviewers or administrators can approve address corrections'];
+        }
+
         $order = Order::find($orderId);
         if (!$order || !$order->pending_address_correction) {
             return ['success' => false, 'message' => 'No pending correction'];
@@ -426,6 +437,7 @@ class OrderService
 
     /**
      * Format order for API response.
+     * invoice_address is never decrypted here; use formatOrderAdmin() for privileged contexts.
      */
     protected function formatOrder(Order $order): array
     {
@@ -442,9 +454,19 @@ class OrderService
             'ticket_number' => $order->ticket_number,
             'auto_cancel_at' => $order->auto_cancel_at,
             'closed_at' => $order->closed_at,
-            'invoice_address' => $order->invoice_address ? EncryptionService::decrypt($order->invoice_address) : null,
+            'invoice_address' => $order->invoice_address ? '***ENCRYPTED***' : null,
             'created_at' => $order->created_at,
             'updated_at' => $order->updated_at,
         ];
+    }
+
+    /**
+     * Format order for admin/privileged API response — decrypts invoice_address.
+     */
+    protected function formatOrderAdmin(Order $order): array
+    {
+        $data = $this->formatOrder($order);
+        $data['invoice_address'] = $order->invoice_address ? EncryptionService::decrypt($order->invoice_address) : null;
+        return $data;
     }
 }

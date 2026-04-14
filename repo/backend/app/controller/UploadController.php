@@ -54,18 +54,21 @@ class UploadController
     public function show(Request $request, int $id): Response
     {
         try {
-            $file = $this->uploadService->getFile($id);
+            $userId = $request->user ? $request->user->id : 0;
+            $role = $request->user ? $request->user->role : '';
+            $file = $this->uploadService->getFile($id, $userId, $role);
             return json([
                 'success' => true,
                 'code' => 200,
                 'data' => $file,
             ]);
         } catch (\Exception $e) {
+            $code = $e->getCode() ?: 404;
             return json([
                 'success' => false,
-                'code' => 404,
+                'code' => $code,
                 'error' => $e->getMessage(),
-            ], 404);
+            ], $code);
         }
     }
 
@@ -76,7 +79,10 @@ class UploadController
     public function download(Request $request, int $id): Response
     {
         try {
-            return $this->uploadService->download($id);
+            $userId = $request->user ? $request->user->id : 0;
+            $role = $request->user ? $request->user->role : '';
+            $fileInfo = $this->uploadService->download($id, $userId, $role);
+            return download($fileInfo['file_path'], $fileInfo['original_name']);
         } catch (\Exception $e) {
             return json([
                 'success' => false,

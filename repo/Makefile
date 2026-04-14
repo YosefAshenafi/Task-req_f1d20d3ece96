@@ -1,4 +1,4 @@
-.PHONY: up down logs restart build shell-php shell-mysql migrate seed install setup layui
+.PHONY: up down logs restart build shell-php shell-mysql migrate seed install setup layui auto-cancel
 
 # ===== Docker =====
 
@@ -44,6 +44,14 @@ setup: build up install layui
 	@echo "  CampusOps is ready!"
 	@echo "  Open http://localhost:8080 in browser"
 	@echo "========================================="
+
+# ===== Scheduled Commands =====
+
+auto-cancel:
+	docker compose exec php php think orders:auto-cancel
+
+index-cleanup:
+	docker compose exec php php think index:cleanup
 
 # ===== Layui =====
 

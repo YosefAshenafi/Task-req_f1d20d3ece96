@@ -117,6 +117,8 @@ Route::group('api/v1', function () {
         });
 
         Route::group('shipments', function () {
+            Route::get('', 'ShipmentController/listAll')
+                ->middleware('rbac', 'shipments.read');
             Route::get('/:id', 'ShipmentController@show')
                 ->middleware('rbac', 'shipments.read');
             Route::post('/:id/scan', 'ShipmentController@scan')
@@ -267,6 +269,8 @@ Route::group('api/v1', function () {
                 ->middleware('rbac', 'activities.read');
             Route::get('popular', 'RecommendationController/popular')
                 ->middleware('rbac', 'activities.read');
+            Route::get('orders', 'RecommendationController/orders')
+                ->middleware('rbac', 'orders.read');
         });
 
         // Dashboard routes
@@ -279,6 +283,16 @@ Route::group('api/v1', function () {
                 ->middleware('rbac', 'dashboard.create');
             Route::put('custom/:id', 'DashboardController/updateCustom')
                 ->middleware('rbac', 'dashboard.update');
+            Route::get('favorites', 'DashboardController/favorites')
+                ->middleware('rbac', 'dashboard.read');
+            Route::post('favorites', 'DashboardController/addFavorite')
+                ->middleware('rbac', 'dashboard.update');
+            Route::delete('favorites/:widget_id', 'DashboardController/removeFavorite')
+                ->middleware('rbac', 'dashboard.update');
+            Route::get('drill/:widget_id', 'DashboardController/drill')
+                ->middleware('rbac', 'dashboard.read');
+            Route::get('snapshot', 'DashboardController/snapshot')
+                ->middleware('rbac', 'dashboard.export');
         });
 
         // Export routes
@@ -288,6 +302,8 @@ Route::group('api/v1', function () {
             Route::get('activities', 'ExportController/activities')
                 ->middleware('rbac', 'dashboard.export');
             Route::get('violations', 'ExportController/violations')
+                ->middleware('rbac', 'dashboard.export');
+            Route::get('download', 'ExportController/download')
                 ->middleware('rbac', 'dashboard.export');
         });
 

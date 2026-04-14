@@ -66,6 +66,7 @@ class UserController
         $data = json_decode($request->getContent(), true);
 
         try {
+            (new \app\validate\UserValidate())->failException(true)->scene('create')->check($data);
             $user = $this->userService->createUser($data, $request->user);
             return json([
                 'success' => true,
@@ -73,6 +74,12 @@ class UserController
                 'data' => $user,
                 'message' => 'User created successfully',
             ], 201);
+        } catch (\think\exception\ValidateException $e) {
+            return json([
+                'success' => false,
+                'code' => 422,
+                'error' => $e->getMessage(),
+            ], 422);
         } catch (\Exception $e) {
             return json([
                 'success' => false,

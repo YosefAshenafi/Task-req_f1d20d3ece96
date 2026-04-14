@@ -16,6 +16,31 @@ class ShipmentController
     }
 
     /**
+     * GET /api/v1/shipments
+     * List all shipments with optional filters.
+     */
+    public function listAll(Request $request): Response
+    {
+        try {
+            $page = (int) $request->get('page', 1);
+            $limit = (int) $request->get('limit', 20);
+            $status = $request->get('status', '');
+            $shipments = $this->shipmentService->listAll($page, $limit, $status);
+            return json([
+                'success' => true,
+                'code' => 200,
+                'data' => $shipments,
+            ]);
+        } catch (\Exception $e) {
+            return json([
+                'success' => false,
+                'code' => 400,
+                'error' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    /**
      * GET /api/v1/orders/:order_id/shipments
      */
     public function index(Request $request, int $orderId): Response
@@ -66,7 +91,9 @@ class ShipmentController
     public function show(Request $request, int $id): Response
     {
         try {
-            $shipment = $this->shipmentService->getShipment($id);
+            $userId = $request->user ? $request->user->id : 0;
+            $role = $request->user ? $request->user->role : '';
+            $shipment = $this->shipmentService->getShipment($id, $userId, $role);
             return json([
                 'success' => true,
                 'code' => 200,

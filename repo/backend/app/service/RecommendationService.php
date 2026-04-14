@@ -35,22 +35,23 @@ class RecommendationService
             ->select();
 
         $results = [];
-        $familyCount = [];
-        $seenFamilies = [];
-        $maxPerFamily = max(1, (int) ceil($limit * self::MAX_FAMILY_DIVERSITY_PCT));
+        $tagCounts = [];
+        $seenGroupIds = [];
+        $maxPerTag = max(1, (int) ceil($limit * self::MAX_FAMILY_DIVERSITY_PCT));
 
         foreach ($candidates as $v) {
             if (count($results) >= $limit) break;
 
             $tags = json_decode($v->tags, true) ?: [];
-            $family = $this->getActivityFamily($v);
 
-            // Dedup: skip if same family already recommended
-            if (isset($seenFamilies[$family])) {
-                // Allow up to maxPerFamily from same family
-                if (($familyCount[$family] ?? 0) >= $maxPerFamily) {
-                    continue;
-                }
+            // Dedup: skip if same group already recommended
+            if (isset($seenGroupIds[$v->group_id])) {
+                continue;
+            }
+
+            // Per-tag diversity cap: skip if any tag already hit its limit
+            if (!empty($tags) && $this->exceedsTagDiversityCap($tags, $tagCounts, $maxPerTag)) {
+                continue;
             }
 
             // Skip activities already signed up for
@@ -60,8 +61,8 @@ class RecommendationService
 
             $score = $this->scoreActivity($v, $userTags, $tags);
 
-            $familyCount[$family] = ($familyCount[$family] ?? 0) + 1;
-            $seenFamilies[$family] = true;
+            $this->incrementTagCounts($tags, $tagCounts);
+            $seenGroupIds[$v->group_id] = true;
 
             $results[] = [
                 'id' => $v->group_id,
@@ -165,37 +166,136 @@ class RecommendationService
     }
 
     /**
-     * Determine activity family (first tag or group_id as fallback).
+     * Determine activity family using all tags (not just first).
+     * Returns a composite key from sorted tags for proper per-tag diversity capping.
      */
     protected function getActivityFamily(ActivityVersion $v): string
     {
         $tags = json_decode($v->tags, true) ?: [];
-        return !empty($tags) ? $tags[0] : 'group_' . $v->group_id;
+        if (empty($tags)) {
+            return 'group_' . $v->group_id;
+        }
+        // Use sorted tags as family key for multi-tag diversity
+        $sorted = $tags;
+        sort($sorted);
+        return implode('|', $sorted);
     }
 
     /**
-     * Score activity based on tag overlap with user interests.
+     * Check per-tag diversity caps across all tags of an activity.
+     * Returns true if any tag exceeds the max per-family limit.
+     */
+    protected function exceedsTagDiversityCap(array $activityTags, array &$tagCounts, int $maxPerTag): bool
+    {
+        foreach ($activityTags as $tag) {
+            if (($tagCounts[$tag] ?? 0) >= $maxPerTag) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Increment per-tag counts for diversity tracking.
+     */
+    protected function incrementTagCounts(array $activityTags, array &$tagCounts): void
+    {
+        foreach ($activityTags as $tag) {
+            $tagCounts[$tag] = ($tagCounts[$tag] ?? 0) + 1;
+        }
+    }
+
+    /**
+     * Get order recommendations based on user's past order history.
+     * Recommends orders from the same activities the user has previously ordered from.
+     */
+    public function getOrderRecommendations(int $userId, int $limit = 10): array
+    {
+        $pastOrders = \app\model\Order::where('created_by', $userId)->select();
+        $activityIds = array_unique(array_column($pastOrders->toArray(), 'activity_id'));
+
+        if (empty($activityIds)) {
+            // Cold start: return recent orders from any activity
+            $candidates = \app\model\Order::where('state', '!=', 'canceled')
+                ->order('id', 'desc')
+                ->limit($limit)
+                ->select();
+        } else {
+            // Recommend orders from the same activities (excluding own orders)
+            $candidates = \app\model\Order::whereIn('activity_id', $activityIds)
+                ->where('created_by', '!=', $userId)
+                ->where('state', '!=', 'canceled')
+                ->order('id', 'desc')
+                ->limit($limit * 3)
+                ->select();
+        }
+
+        $seen = [];
+        $results = [];
+        foreach ($candidates as $o) {
+            if (count($results) >= $limit) break;
+            if (isset($seen[$o->id])) continue;
+            $seen[$o->id] = true;
+            $results[] = [
+                'id' => $o->id,
+                'activity_id' => $o->activity_id,
+                'state' => $o->state,
+                'amount' => $o->amount,
+                'created_at' => $o->created_at,
+            ];
+        }
+
+        return ['list' => $results];
+    }
+
+    /**
+     * Score activity based on tag overlap, recency, popularity, views, and saves signals.
+     * NOTE: "saves" signal is proxied by view_count from the search index, since there is
+     * no separate saves/bookmarks table. A future enhancement should replace this with a
+     * dedicated saves table.
      */
     protected function scoreActivity(ActivityVersion $v, array $userTags, array $activityTags): float
     {
         $score = 0.0;
+
+        // Tag overlap with user interests (weighted by position in user's interest list)
         foreach ($activityTags as $tag) {
-            if (in_array($tag, $userTags)) {
-                $score += 1.0;
+            $position = array_search($tag, $userTags);
+            if ($position !== false) {
+                // Higher weight for stronger interests (earlier in sorted list)
+                $score += 1.0 + (0.5 / ($position + 1));
             }
         }
 
         // Recency bonus
         if ($v->published_at) {
             $daysSince = max(1, (time() - strtotime($v->published_at)) / 86400);
-            $score += 1.0 / $daysSince;
+            $score += 2.0 / $daysSince;
         }
 
-        // Popularity signal
+        // Popularity signal: signup count
         $signups = ActivitySignup::where('group_id', $v->group_id)
             ->whereIn('status', ['confirmed', 'pending_acknowledgement'])
             ->count();
-        $score += min(1.0, $signups / 50.0);
+        $score += min(1.5, $signups / 30.0);
+
+        // Views/saves signal: use search index view_count as proxy for both views and saves
+        // (No dedicated saves table exists; view_count captures engagement intent)
+        $searchEntry = \app\model\SearchIndex::where('entity_type', 'activity')
+            ->where('entity_id', $v->group_id)
+            ->find();
+        if ($searchEntry) {
+            $viewCount = $searchEntry->view_count ?? 0;
+            $score += min(1.0, $viewCount / 100.0);
+        }
+
+        // Headcount scarcity bonus (activities close to full get a boost)
+        if ($v->max_headcount > 0) {
+            $fillRatio = $signups / $v->max_headcount;
+            if ($fillRatio >= 0.7 && $fillRatio < 1.0) {
+                $score += 0.5; // Urgency bonus for nearly-full activities
+            }
+        }
 
         return $score;
     }

@@ -45,17 +45,25 @@ class OrderController
             $userId = $request->user ? $request->user->id : 0;
             $role = $request->user ? $request->user->role : '';
             $order = $this->orderService->getOrder($id, $userId, $role);
+            if ($order === null) {
+                return json([
+                    'success' => false,
+                    'code' => 404,
+                    'error' => 'Order not found or access denied',
+                ], 404);
+            }
             return json([
                 'success' => true,
                 'code' => 200,
                 'data' => $order,
             ]);
         } catch (\Exception $e) {
+            $code = $e->getCode() ?: 404;
             return json([
                 'success' => false,
-                'code' => 404,
+                'code' => $code,
                 'error' => $e->getMessage(),
-            ], 404);
+            ], $code);
         }
     }
 
@@ -65,7 +73,9 @@ class OrderController
     public function history(Request $request, int $id): Response
     {
         try {
-            $history = $this->orderService->getHistory($id);
+            $userId = $request->user ? $request->user->id : 0;
+            $role = $request->user ? $request->user->role : '';
+            $history = $this->orderService->getHistory($id, $userId, $role);
             return json([
                 'success' => true,
                 'code' => 200,
@@ -88,6 +98,7 @@ class OrderController
         $data = json_decode($request->getContent(), true);
 
         try {
+            (new \app\validate\OrderValidate())->failException(true)->scene('create')->check($data);
             $order = $this->orderService->createOrder($data, $request->user);
             return json([
                 'success' => true,
@@ -95,6 +106,12 @@ class OrderController
                 'data' => $order,
                 'message' => 'Order created successfully',
             ], 201);
+        } catch (\think\exception\ValidateException $e) {
+            return json([
+                'success' => false,
+                'code' => 422,
+                'error' => $e->getMessage(),
+            ], 422);
         } catch (\Exception $e) {
             return json([
                 'success' => false,
@@ -112,6 +129,7 @@ class OrderController
         $data = json_decode($request->getContent(), true);
 
         try {
+            (new \app\validate\OrderValidate())->failException(true)->scene('update')->check($data);
             $order = $this->orderService->updateOrder($id, $data, $request->user);
             return json([
                 'success' => true,
@@ -119,6 +137,12 @@ class OrderController
                 'data' => $order,
                 'message' => 'Order updated successfully',
             ]);
+        } catch (\think\exception\ValidateException $e) {
+            return json([
+                'success' => false,
+                'code' => 422,
+                'error' => $e->getMessage(),
+            ], 422);
         } catch (\Exception $e) {
             $code = $e->getCode() ?: 400;
             return json([
@@ -342,7 +366,7 @@ class OrderController
      */
     public function approveAddressCorrection(Request $request, int $id): Response
     {
-        $result = $this->orderService->approveAddressCorrection($id, $request->user->id);
+        $result = $this->orderService->approveAddressCorrection($id, $request->user->id, $request->user->role);
 
         $code = $result['success'] ? 200 : 400;
         return json(array_merge(['code' => $code], $result), $code);

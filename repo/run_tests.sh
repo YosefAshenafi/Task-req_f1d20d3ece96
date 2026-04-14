@@ -35,7 +35,6 @@ if [ -f test-results/junit.xml ]; then
     echo "Assertions:  $TOTAL_ASSERTIONS"
     echo "Time:        ${TOTAL_TIME}s"
     echo ""
-    echo "Coverage:    90% (AuthService covered)"
 fi
 
 echo ""

@@ -19,11 +19,15 @@ class SearchService
     }
 
     /**
-     * Search entities with full-text, pinyin, and spell correction.
+     * Search entities with full-text, pinyin, spell correction, sorting, and highlighting.
+     * @param string $sort One of: relevance, recency, popularity, reply_count
+     * @param bool $highlight Whether to include highlighted fields
+     * @param string $author Filter by creator username/id
+     * @param string $tags Comma-separated tag filter
+     * @param int $replyCountMin Minimum view_count proxy for engagement filtering
      */
-    public function search(string $query, string $type = '', int $page = 1, int $limit = 20): array
+    public function search(string $query, string $type = '', int $page = 1, int $limit = 20, string $sort = 'relevance', bool $highlight = true, string $author = '', string $tags = '', int $replyCountMin = 0): array
     {
-        $queryLower = strtolower($query);
         $normalized = $this->normalizeText($query);
         $pinyinSearch = PinyinService::toPinyin($query);
 
@@ -38,12 +42,120 @@ class SearchService
             $queryBuilder->where('entity_type', $type);
         }
 
+        // Filter by author (creator username or id stored in author field)
+        if (!empty($author)) {
+            $queryBuilder->where('author', 'like', "%{$author}%");
+        }
+
+        // Filter by tags (comma-separated list; each tag must match in the JSON tags field)
+        if (!empty($tags)) {
+            $tagList = array_filter(array_map('trim', explode(',', $tags)));
+            foreach ($tagList as $tag) {
+                $tag = addslashes($tag);
+                $queryBuilder->where('tags', 'like', "%\"{$tag}\"%");
+            }
+        }
+
+        // Filter by engagement proxy: view_count >= reply_count_min
+        if ($replyCountMin > 0) {
+            $queryBuilder->where('view_count', '>=', $replyCountMin);
+        }
+
+        // Apply sorting
+        switch ($sort) {
+            case 'recency':
+                $queryBuilder->order('updated_at', 'desc');
+                break;
+            case 'popularity':
+                $queryBuilder->order('view_count', 'desc');
+                break;
+            case 'reply_count':
+                // reply_count sort uses view_count as engagement proxy (no separate reply table)
+                $queryBuilder->order('view_count', 'desc');
+                break;
+            case 'relevance':
+            default:
+                // Relevance: title matches first, then by recency
+                $queryBuilder->orderRaw("CASE WHEN title LIKE '%{$query}%' THEN 0 ELSE 1 END ASC, updated_at DESC");
+                break;
+        }
+
         $total = $queryBuilder->count();
         $results = $queryBuilder->page($page, $limit)->select();
 
         $list = [];
         foreach ($results as $r) {
-            $list[] = $this->formatResult($r);
+            $formatted = $this->formatResult($r);
+            if ($highlight) {
+                $formatted['highlights'] = $this->generateHighlights($r, $query);
+            }
+            $list[] = $formatted;
+        }
+
+        $didYouMean = $this->getDidYouMean($query);
+
+        return [
+            'list' => $list,
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+            'query' => $query,
+            'sort' => $sort,
+            'did_you_mean' => $didYouMean,
+        ];
+    }
+
+    /**
+     * Logistics-specific search with tracking number tokenization and synonym handling.
+     */
+    public function searchLogistics(string $query, int $page = 1, int $limit = 20, string $sort = 'recency'): array
+    {
+        // Normalize tracking number: strip spaces/dashes for fuzzy match
+        $tokenized = preg_replace('/[\s\-]/', '', $query);
+
+        // Synonym expansion for common logistics terms
+        $synonyms = [
+            'delivered' => ['completed', 'received', 'arrived'],
+            'shipped' => ['dispatched', 'sent', 'in_transit'],
+            'pending' => ['waiting', 'processing', 'queued'],
+            'delayed' => ['late', 'overdue', 'exception'],
+        ];
+
+        $queryLower = strtolower($query);
+        $expandedTerms = [$query, $tokenized];
+        foreach ($synonyms as $term => $synonymList) {
+            if (strpos($queryLower, $term) !== false) {
+                $expandedTerms = array_merge($expandedTerms, $synonymList);
+            }
+        }
+
+        $queryBuilder = SearchIndex::where('entity_type', 'order')
+            ->where(function($q) use ($expandedTerms) {
+                foreach ($expandedTerms as $term) {
+                    $q->whereOr('title', 'like', "%{$term}%");
+                    $q->whereOr('body', 'like', "%{$term}%");
+                    $q->whereOr('normalized_text', 'like', "%{$term}%");
+                }
+            });
+
+        switch ($sort) {
+            case 'recency':
+                $queryBuilder->order('updated_at', 'desc');
+                break;
+            case 'relevance':
+            default:
+                $queryBuilder->order('id', 'desc');
+                break;
+        }
+
+        $total = $queryBuilder->count();
+        $results = $queryBuilder->page($page, $limit)->select();
+
+        $list = [];
+        foreach ($results as $r) {
+            $formatted = $this->formatResult($r);
+            $formatted['highlights'] = $this->generateHighlights($r, $query);
+            $list[] = $formatted;
         }
 
         return [
@@ -52,6 +164,7 @@ class SearchService
             'page' => $page,
             'limit' => $limit,
             'query' => $query,
+            'sort' => $sort,
         ];
     }
 
@@ -210,9 +323,30 @@ class SearchService
             'id' => $r->entity_id,
             'type' => $r->entity_type,
             'title' => $r->title,
-            'body' => mb_substr($r->body, 0, 100),
+            'body' => mb_substr($r->body, 0, 200),
+            'tags' => json_decode($r->tags, true) ?: [],
             'url' => $this->getUrl($r->entity_type, $r->entity_id),
+            'updated_at' => $r->updated_at,
         ];
+    }
+
+    /**
+     * Generate field-level highlights for search results.
+     */
+    protected function generateHighlights(SearchIndex $r, string $query): array
+    {
+        $highlights = [];
+        $escapedQuery = preg_quote($query, '/');
+
+        if (preg_match("/(.{0,40})({$escapedQuery})(.{0,40})/i", $r->title, $m)) {
+            $highlights['title'] = $m[1] . '<em>' . $m[2] . '</em>' . $m[3];
+        }
+
+        if (preg_match("/(.{0,60})({$escapedQuery})(.{0,60})/i", $r->body, $m)) {
+            $highlights['body'] = '...' . $m[1] . '<em>' . $m[2] . '</em>' . $m[3] . '...';
+        }
+
+        return $highlights;
     }
 
     protected function getUrl(string $type, int $id): string

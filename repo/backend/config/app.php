@@ -16,8 +16,8 @@ return [
     // Default language
     'default_lang' => 'en',
 
-    // Exception handling
-    'show_error_msg' => true,
+    // Exception handling — only show detailed errors when APP_DEBUG is true
+    'show_error_msg' => env('APP_DEBUG', false),
 
     // URL settings
     'with_route' => true,

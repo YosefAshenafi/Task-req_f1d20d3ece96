@@ -68,7 +68,68 @@ class DashboardService
         if (isset($data['name'])) $dashboard->name = $data['name'];
         if (isset($data['widgets'])) $dashboard->widgets = json_encode($data['widgets']);
         $dashboard->save();
-        
+
         return $dashboard->toArray();
+    }
+
+    /**
+     * Favorite a widget for a user.
+     */
+    public function favoriteWidget(int $userId, string $widgetId): array
+    {
+        $existing = \app\model\DashboardFavorite::where('user_id', $userId)
+            ->where('widget_id', $widgetId)
+            ->find();
+        if (!$existing) {
+            $fav = new \app\model\DashboardFavorite();
+            $fav->user_id = $userId;
+            $fav->widget_id = $widgetId;
+            $fav->save();
+        }
+        return ['widget_id' => $widgetId, 'favorited' => true];
+    }
+
+    /**
+     * Unfavorite a widget for a user.
+     */
+    public function unfavoriteWidget(int $userId, string $widgetId): array
+    {
+        \app\model\DashboardFavorite::where('user_id', $userId)
+            ->where('widget_id', $widgetId)
+            ->delete();
+        return ['widget_id' => $widgetId, 'favorited' => false];
+    }
+
+    /**
+     * Get all favorited widgets for a user.
+     */
+    public function getFavorites(int $userId): array
+    {
+        $favorites = \app\model\DashboardFavorite::where('user_id', $userId)->select();
+        $result = [];
+        foreach ($favorites as $f) {
+            $result[] = ['widget_id' => $f->widget_id];
+        }
+        return $result;
+    }
+
+    /**
+     * Get drill-through data for a specific widget.
+     */
+    public function getDrillData(string $widgetId): array
+    {
+        if ($widgetId === 'orders_by_state') {
+            $orders = Order::order('id', 'desc')->limit(50)->select();
+            $list = [];
+            foreach ($orders as $o) {
+                $list[] = ['id' => $o->id, 'state' => $o->state, 'amount' => $o->amount, 'created_at' => $o->created_at];
+            }
+            return ['widget_id' => $widgetId, 'data' => $list];
+        }
+        if ($widgetId === 'activities_by_state') {
+            $activities = ActivityVersion::order('id', 'desc')->limit(50)->select()->toArray();
+            return ['widget_id' => $widgetId, 'data' => $activities];
+        }
+        return ['widget_id' => $widgetId, 'data' => []];
     }
 }

@@ -24,6 +24,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
         },
 
         renderTasks: function (list) {
+            var that = this;
             var $tbody = $('#tasks-tbody');
             $tbody.empty();
             for (var i = 0; i < list.length; i++) {
