@@ -4,6 +4,9 @@ use think\facade\Route;
 
 // API v1 routes
 Route::group('api/v1', function () {
+    
+    // Apply rate limiting to all routes
+    Route::middleware('rate_limit');
 
     // Health check - no auth required
     Route::get('ping', 'Index/ping');
