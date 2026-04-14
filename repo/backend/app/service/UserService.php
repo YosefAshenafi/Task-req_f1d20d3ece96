@@ -29,8 +29,13 @@ class UserService
         $total = $query->count();
         $users = $query->page($page, $limit)->select();
 
+        $list = [];
+        foreach ($users as $user) {
+            $list[] = $this->formatUser($user);
+        }
+
         return [
-            'list' => array_map(fn($u) => $this->formatUser($u), $users),
+            'list' => $list,
             'total' => $total,
             'page' => $page,
             'limit' => $limit,

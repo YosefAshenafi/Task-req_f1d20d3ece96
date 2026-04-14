@@ -32,8 +32,13 @@ class AuditService
         $total = $query->count();
         $entries = $query->page($page, $limit)->select();
 
+        $list = [];
+        foreach ($entries as $e) {
+            $list[] = $this->format($e);
+        }
+
         return [
-            'list' => array_map(fn($e) => $this->format($e), $entries),
+            'list' => $list,
             'total' => $total,
             'page' => $page,
             'limit' => $limit,

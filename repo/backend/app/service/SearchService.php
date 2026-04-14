@@ -43,8 +43,13 @@ class SearchService
         $total = SearchIndex::where($where)->count();
         $results = SearchIndex::where($where)->page($page, $limit)->select();
 
+        $list = [];
+        foreach ($results as $r) {
+            $list[] = $this->formatResult($r);
+        }
+
         return [
-            'list' => array_map(fn($r) => $this->formatResult($r), $results),
+            'list' => $list,
             'total' => $total,
             'page' => $page,
             'limit' => $limit,
@@ -63,11 +68,14 @@ class SearchService
             ->limit($limit)
             ->select();
 
-        $suggestions = array_map(fn($r) => [
-            'id' => $r->entity_id,
-            'type' => $r->entity_type,
-            'title' => $r->title,
-        ], $results);
+        $suggestions = [];
+        foreach ($results as $r) {
+            $suggestions[] = [
+                'id' => $r->entity_id,
+                'type' => $r->entity_type,
+                'title' => $r->title,
+            ];
+        }
 
         foreach ($pinyinSuggestions as $py) {
             if (count($suggestions) >= $limit) break;

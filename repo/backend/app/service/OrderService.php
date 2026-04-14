@@ -36,8 +36,13 @@ class OrderService
         $total = $query->count();
         $orders = $query->page($page, $limit)->select();
 
+        $list = [];
+        foreach ($orders as $o) {
+            $list[] = $this->formatOrder($o);
+        }
+
         return [
-            'list' => array_map(fn($o) => $this->formatOrder($o), $orders),
+            'list' => $list,
             'total' => $total,
             'page' => $page,
             'limit' => $limit,

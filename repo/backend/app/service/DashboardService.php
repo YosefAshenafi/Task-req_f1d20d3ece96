@@ -23,15 +23,20 @@ class DashboardService
 
         $recentOrders = Order::order('id', 'desc')->limit(5)->select();
 
+        $recentOrdersList = [];
+        foreach ($recentOrders as $o) {
+            $recentOrdersList[] = [
+                'id' => $o->id,
+                'state' => $o->state,
+                'amount' => $o->amount,
+            ];
+        }
+
         return [
             'widgets' => [
                 'orders_by_state' => $ordersByState,
                 'activities_by_state' => $activitiesByState,
-                'recent_orders' => array_map(fn($o) => [
-                    'id' => $o->id,
-                    'state' => $o->state,
-                    'amount' => $o->amount,
-                ], $recentOrders),
+                'recent_orders' => $recentOrdersList,
             ],
         ];
     }
