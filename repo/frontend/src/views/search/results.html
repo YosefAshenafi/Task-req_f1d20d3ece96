@@ -1,0 +1,28 @@
+<div class="search-view" style="padding: 15px;">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <span style="font-size: 18px; font-weight: 600;">Search</span>
+        </div>
+        <div class="layui-card-body">
+            <div class="layui-form layui-form-item">
+                <div class="layui-inline" style="width: 60%;">
+                    <input type="text" id="search-input" placeholder="Search activities, orders..." class="layui-input" style="font-size: 16px;">
+                </div>
+                <div class="layui-inline">
+                    <select id="search-type" style="width: 120px;">
+                        <option value="">All</option>
+                        <option value="activity">Activities</option>
+                        <option value="order">Orders</option>
+                    </select>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn" id="btn-search">Search</button>
+                </div>
+            </div>
+            <div id="search-suggestions" style="margin-bottom: 15px;"></div>
+            <div class="layui-hint" id="spell-correction" style="color: #1E9FFF; cursor: pointer; display: none;"></div>
+            <div id="search-results"></div>
+            <div id="search-pagination"></div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="order-detail-view" style="padding: 15px;">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <span style="font-size: 18px; font-weight: 600;">Order #<span id="order-id"></span></span>
+        </div>
+        <div class="layui-card-body">
+            <blockquote class="layui-elem-quote" id="order-state-badge"></blockquote>
+            
+            <div class="layui-progress layui-progress-lg" lay-showPercent="true" id="order-progress" style="margin: 20px 0;">
+                <div class="layui-progress-bar" lay-percent="0%"></div>
+            </div>
+            
+            <fieldset class="layui-elem-field">
+                <legend>State History</legend>
+                <div class="layui-field-box" id="order-history"></div>
+            </fieldset>
+            
+            <div class="layui-form-item" id="order-actions" style="margin-top: 20px;"></div>
+        </div>
+    </div>
+</div>
