@@ -45,7 +45,7 @@ layui.define(['jquery', 'layer'], function (exports) {
          * Confirm dialog.
          */
         confirm: function (msg, callback) {
-            layer.confirm(msg, { icon: 3, title: 'Confirm' }, function (idx) {
+            layer.confirm(msg, { icon: 3, title: 'Confirm', btn: ['OK', 'Cancel'] }, function (idx) {
                 if (callback) callback();
                 layer.close(idx);
             });

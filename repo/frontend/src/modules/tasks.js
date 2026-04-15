@@ -145,7 +145,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
 
         deleteTask: function (id) {
             var that = this;
-            layer.confirm('Delete this task?', { icon: 3 }, function (idx) {
+            layer.confirm('Delete this task?', { icon: 3, btn: ['OK', 'Cancel'] }, function (idx) {
                 common.request({
                     url: '/tasks/' + id,
                     method: 'DELETE',

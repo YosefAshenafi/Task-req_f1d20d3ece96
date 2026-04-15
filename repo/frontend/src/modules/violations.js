@@ -269,7 +269,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
         },
 
         deleteRule: function (id) {
-            layer.confirm('Delete this rule?', { icon: 3 }, function (idx) {
+            layer.confirm('Delete this rule?', { icon: 3, btn: ['OK', 'Cancel'] }, function (idx) {
                 common.request({
                     url: '/violations/rules/' + id,
                     method: 'DELETE',

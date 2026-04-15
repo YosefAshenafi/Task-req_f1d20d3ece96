@@ -235,7 +235,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
 
         transition: function (id, action) {
             var that = this;
-            layer.confirm('Confirm action: ' + action + '?', { icon: 3 }, function (idx) {
+            layer.confirm('Confirm action: ' + action + '?', { icon: 3, btn: ['OK', 'Cancel'] }, function (idx) {
                 common.request({
                     url: '/orders/' + id + '/' + action,
                     method: 'POST',

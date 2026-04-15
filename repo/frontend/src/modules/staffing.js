@@ -93,7 +93,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
 
         delete: function (id) {
             var that = this;
-            layer.confirm('Delete?', { icon: 3 }, function (idx) {
+            layer.confirm('Delete?', { icon: 3, btn: ['OK', 'Cancel'] }, function (idx) {
                 common.request({
                     url: '/staffing/' + id, method: 'DELETE',
                     success: function () { that.load(that.currentActivityId); }

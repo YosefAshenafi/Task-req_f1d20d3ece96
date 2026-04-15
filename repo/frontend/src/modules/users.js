@@ -246,7 +246,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
          */
         deleteUser: function (id) {
             var that = this;
-            layer.confirm('Are you sure you want to disable this user?', { icon: 3, title: 'Confirm' }, function (index) {
+            layer.confirm('Are you sure you want to disable this user?', { icon: 3, title: 'Confirm', btn: ['OK', 'Cancel'] }, function (index) {
                 common.request({
                     url: '/users/' + id,
                     method: 'DELETE',

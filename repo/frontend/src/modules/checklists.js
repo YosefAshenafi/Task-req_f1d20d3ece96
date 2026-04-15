@@ -161,7 +161,7 @@ layui.define(['jquery', 'layer', 'form', 'common'], function (exports) {
 
         deleteChecklist: function (id) {
             var that = this;
-            layer.confirm('Delete this checklist and all its items?', { icon: 3 }, function (idx) {
+            layer.confirm('Delete this checklist and all its items?', { icon: 3, btn: ['OK', 'Cancel'] }, function (idx) {
                 common.request({
                     url: '/checklists/' + id,
                     method: 'DELETE',
