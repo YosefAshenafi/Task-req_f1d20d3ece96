@@ -5,6 +5,7 @@ namespace app\service;
 use app\model\Checklist;
 use app\model\ChecklistItem;
 use app\model\ActivityGroup;
+use app\model\ActivityVersion;
 
 class ChecklistService
 {

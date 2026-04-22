@@ -5,6 +5,7 @@ namespace app\controller;
 use think\Request;
 use think\Response;
 use app\service\TaskService;
+use app\model\ActivityVersion;
 
 class TaskController
 {
@@ -20,6 +21,9 @@ class TaskController
      */
     public function index(Request $request, int $activityId): Response
     {
+        if (!ActivityVersion::find($activityId)) {
+            return json(['success' => false, 'code' => 404, 'error' => 'Activity not found'], 404);
+        }
         try {
             $tasks = $this->taskService->getTasks($activityId);
             return json(['success' => true, 'code' => 200, 'data' => $tasks]);
@@ -33,12 +37,16 @@ class TaskController
      */
     public function create(Request $request, int $activityId): Response
     {
+        if (!ActivityVersion::find($activityId)) {
+            return json(['success' => false, 'code' => 404, 'error' => 'Activity not found'], 404);
+        }
         $data = json_decode($request->getContent(), true);
         try {
             $task = $this->taskService->createTask($activityId, $data, $request->user);
             return json(['success' => true, 'code' => 201, 'data' => $task, 'message' => 'Task created'], 201);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 
@@ -52,7 +60,8 @@ class TaskController
             $task = $this->taskService->updateTask($id, $data, $request->user);
             return json(['success' => true, 'code' => 200, 'data' => $task, 'message' => 'Task updated']);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 
@@ -67,7 +76,8 @@ class TaskController
             $task = $this->taskService->updateStatus($id, $status, $request->user);
             return json(['success' => true, 'code' => 200, 'data' => $task, 'message' => 'Status updated']);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 
@@ -80,7 +90,8 @@ class TaskController
             $this->taskService->deleteTask($id, $request->user);
             return json(['success' => true, 'code' => 200, 'message' => 'Task deleted']);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 }

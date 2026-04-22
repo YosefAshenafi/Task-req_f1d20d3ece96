@@ -34,26 +34,40 @@ Route::group('api/v1', function () {
             Route::get('', 'UserController/index')
                 ->middleware('rbac', 'users.read')
                 ->middleware('sensitive_data');
-            Route::get('/:id', 'UserController/show')
-                ->middleware('rbac', 'users.read')
-                ->middleware('sensitive_data');
             Route::post('', 'UserController/create')
                 ->middleware('rbac', 'users.create');
-            Route::put('/:id', 'UserController/update')
-                ->middleware('rbac', 'users.update');
-            Route::delete('/:id', 'UserController/delete')
-                ->middleware('rbac', 'users.delete');
+            // More-specific sub-paths must come before /:id to prevent prefix-match.
             Route::put('/:id/role', 'UserController/changeRole')
                 ->middleware('rbac', 'users.update');
             Route::put('/:id/password', 'UserController/resetPassword')
                 ->middleware('rbac', 'users.password');
+            Route::get('/:id', 'UserController/show')
+                ->middleware('rbac', 'users.read')
+                ->middleware('sensitive_data');
+            Route::put('/:id', 'UserController/update')
+                ->middleware('rbac', 'users.update');
+            Route::delete('/:id', 'UserController/delete')
+                ->middleware('rbac', 'users.delete');
         });
+
+        // Activity sub-resource routes — explicit declarations to avoid ThinkPHP
+        // prefix-match ambiguity with the activities/:id catch-all below.
+        Route::get('activities/:activity_id/tasks', 'TaskController/index')
+            ->middleware('rbac', 'tasks.read');
+        Route::post('activities/:activity_id/tasks', 'TaskController/create')
+            ->middleware('rbac', 'tasks.create');
+        Route::get('activities/:activity_id/checklists', 'ChecklistController/index')
+            ->middleware('rbac', 'checklists.read');
+        Route::post('activities/:activity_id/checklists', 'ChecklistController/create')
+            ->middleware('rbac', 'tasks.create');
+        Route::get('activities/:activity_id/staffing', 'StaffingController/index')
+            ->middleware('rbac', 'staffing.read');
+        Route::post('activities/:activity_id/staffing', 'StaffingController/create')
+            ->middleware('rbac', 'staffing.create');
 
         // Activity management routes
         Route::group('activities', function () {
             Route::get('', 'ActivityController/index')
-                ->middleware('rbac', 'activities.read');
-            Route::get('/:id', 'ActivityController/show')
                 ->middleware('rbac', 'activities.read');
             Route::get('/:id/versions', 'ActivityController/versions')
                 ->middleware('rbac', 'activities.read');
@@ -73,12 +87,15 @@ Route::group('api/v1', function () {
                 ->middleware('rbac', 'activities.transition');
             Route::post('/:id/archive', 'ActivityController/archive')
                 ->middleware('rbac', 'activities.transition');
+            // acknowledge must come before /:id/signups to prevent prefix-match
+            Route::post('/:id/signups/:signup_id/acknowledge', 'ActivityController/acknowledge')
+                ->middleware('rbac', 'activities.signup');
             Route::post('/:id/signups', 'ActivityController/signup')
                 ->middleware('rbac', 'activities.signup');
             Route::delete('/:id/signups/:signup_id', 'ActivityController/cancelSignup')
                 ->middleware('rbac', 'activities.signup');
-            Route::post('/:id/signups/:signup_id/acknowledge', 'ActivityController/acknowledge')
-                ->middleware('rbac', 'activities.signup');
+            Route::get('/:id', 'ActivityController/show')
+                ->middleware('rbac', 'activities.read');
         });
 
         // Order management routes (with sensitive data masking)
@@ -128,8 +145,7 @@ Route::group('api/v1', function () {
         Route::group('shipments', function () {
             Route::get('', 'ShipmentController/listAll')
                 ->middleware('rbac', 'shipments.read');
-            Route::get('/:id', 'ShipmentController/show')
-                ->middleware('rbac', 'shipments.read');
+            // More-specific sub-paths must come before /:id to prevent prefix-match.
             Route::post('/:id/scan', 'ShipmentController/scan')
                 ->middleware('rbac', 'shipments.update');
             Route::get('/:id/scan-history', 'ShipmentController/scanHistory')
@@ -140,6 +156,9 @@ Route::group('api/v1', function () {
                 ->middleware('rbac', 'shipments.read');
             Route::post('/:id/exceptions', 'ShipmentController/reportException')
                 ->middleware('rbac', 'shipments.exception');
+            // Generic /:id last so sub-paths are matched first.
+            Route::get('/:id', 'ShipmentController/show')
+                ->middleware('rbac', 'shipments.read');
         });
 
         // Violation management routes
@@ -176,22 +195,16 @@ Route::group('api/v1', function () {
         Route::group('upload', function () {
             Route::post('', 'UploadController/upload')
                 ->middleware('rbac', 'uploads.create');
-            Route::get('/:id', 'UploadController/show')
-                ->middleware('rbac', 'files.read');
+            // More-specific sub-paths must come before /:id to prevent prefix-match.
             Route::get('/:id/download', 'UploadController/download')
+                ->middleware('rbac', 'files.read');
+            Route::get('/:id', 'UploadController/show')
                 ->middleware('rbac', 'files.read');
             Route::delete('/:id', 'UploadController/delete')
                 ->middleware('rbac', 'uploads.delete');
         });
 
         // Task routes
-        Route::group('activities/:activity_id/tasks', function () {
-            Route::get('', 'TaskController/index')
-                ->middleware('rbac', 'tasks.read');
-            Route::post('', 'TaskController/create')
-                ->middleware('rbac', 'tasks.create');
-        });
-
         Route::group('tasks', function () {
             Route::put('/:id', 'TaskController/update')
                 ->middleware('rbac', 'tasks.update');
@@ -202,30 +215,16 @@ Route::group('api/v1', function () {
         });
 
         // Checklist routes
-        Route::group('activities/:activity_id/checklists', function () {
-            Route::get('', 'ChecklistController/index')
-                ->middleware('rbac', 'checklists.read');
-            Route::post('', 'ChecklistController/create')
-                ->middleware('rbac', 'tasks.create');
-        });
-
         Route::group('checklists', function () {
             Route::put('/:id', 'ChecklistController/update')
                 ->middleware('rbac', 'tasks.update');
             Route::delete('/:id', 'ChecklistController/delete')
                 ->middleware('rbac', 'tasks.delete');
-            Route::post('/:id/items/:item_id/complete', 'ChecklistController/completeItem')
+            Route::post('/:checklistId/items/:itemId/complete', 'ChecklistController/completeItem')
                 ->middleware('rbac', 'checklists.update');
         });
 
         // Staffing routes
-        Route::group('activities/:activity_id/staffing', function () {
-            Route::get('', 'StaffingController/index')
-                ->middleware('rbac', 'staffing.read');
-            Route::post('', 'StaffingController/create')
-                ->middleware('rbac', 'staffing.create');
-        });
-
         Route::group('staffing', function () {
             Route::put('/:id', 'StaffingController/update')
                 ->middleware('rbac', 'staffing.update');

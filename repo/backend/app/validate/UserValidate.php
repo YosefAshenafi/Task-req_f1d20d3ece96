@@ -7,7 +7,7 @@ use think\Validate;
 class UserValidate extends Validate
 {
     protected $rule = [
-        'username' => 'require|min:3|max:32|alphaNum',
+        'username' => 'require|min:3|max:32|alphaDash',
         'password' => 'require|min:10|max:100',
         'role' => 'require|max:32',
         'status' => 'require|in:active,disabled',
@@ -17,7 +17,7 @@ class UserValidate extends Validate
         'username.require' => 'Username is required',
         'username.min' => 'Username must be at least 3 characters',
         'username.max' => 'Username cannot exceed 32 characters',
-        'username.alphaNum' => 'Username must be alphanumeric',
+        'username.alphaDash' => 'Username can only contain letters, numbers, hyphens, and underscores',
         'password.require' => 'Password is required',
         'password.min' => 'Password must be at least 10 characters',
         'password.max' => 'Password cannot exceed 100 characters',
@@ -28,7 +28,7 @@ class UserValidate extends Validate
     ];
 
     protected $scene = [
-        'create' => ['username', 'password', 'role', 'status'],
+        'create' => ['username', 'password'],
         'update' => ['username', 'status'],
         'changeRole' => ['role'],
     ];

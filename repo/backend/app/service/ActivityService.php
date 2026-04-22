@@ -333,6 +333,10 @@ class ActivityService
             ->order('version_number', 'desc')
             ->find();
 
+        if (!$version) {
+            throw new \Exception('Activity not found', 404);
+        }
+
         if ($version->state !== self::STATE_PUBLISHED) {
             throw new \Exception('Only Published activities can be started', 400);
         }
@@ -356,6 +360,10 @@ class ActivityService
             ->order('version_number', 'desc')
             ->find();
 
+        if (!$version) {
+            throw new \Exception('Activity not found', 404);
+        }
+
         if ($version->state !== self::STATE_IN_PROGRESS) {
             throw new \Exception('Only In Progress activities can be completed', 400);
         }
@@ -378,6 +386,10 @@ class ActivityService
         $version = ActivityVersion::where('group_id', $id)
             ->order('version_number', 'desc')
             ->find();
+
+        if (!$version) {
+            throw new \Exception('Activity not found', 404);
+        }
 
         if ($version->state !== self::STATE_COMPLETED) {
             throw new \Exception('Only Completed activities can be archived', 400);
@@ -477,7 +489,7 @@ class ActivityService
             throw new \Exception('Signup not found', 404);
         }
 
-        if ($signup->user_id != $currentUser->id) {
+        if ($signup->user_id != $currentUser->id && $currentUser->role !== 'administrator') {
             throw new \Exception('Cannot cancel other user signups', 403);
         }
 
@@ -495,7 +507,7 @@ class ActivityService
             throw new \Exception('Signup not found', 404);
         }
 
-        if ($signup->user_id != $currentUser->id) {
+        if ($signup->user_id != $currentUser->id && $currentUser->role !== 'administrator') {
             throw new \Exception('Cannot acknowledge for other users', 403);
         }
 

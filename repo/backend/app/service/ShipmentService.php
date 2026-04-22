@@ -219,7 +219,7 @@ class ShipmentService
             'order_id' => $shipment->order_id,
             'carrier' => $shipment->carrier,
             'tracking_number' => $shipment->tracking_number,
-            'package_contents' => json_decode($shipment->package_contents, true) ?: [],
+            'package_contents' => json_decode($shipment->package_contents ?? '[]', true) ?: [],
             'weight' => $shipment->weight,
             'status' => $shipment->status,
             'origin' => $shipment->origin ?? '',

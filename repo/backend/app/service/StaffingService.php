@@ -4,6 +4,7 @@ namespace app\service;
 
 use app\model\Staffing;
 use app\model\ActivityGroup;
+use app\model\ActivityVersion;
 
 class StaffingService
 {

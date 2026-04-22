@@ -219,7 +219,7 @@ class SensitiveDataMiddlewareTest extends TestCase
         $body     = json_decode($response->getContent(), true);
 
         $this->assertSame('***REDACTED***', $body['data']['invoice_address']);
-        $this->assertSame(99.0, $body['data']['amount']);
+        $this->assertSame(99, $body['data']['amount']);
     }
 
     public function testHandlePassesThroughWhenNoUserAttached(): void

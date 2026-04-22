@@ -64,9 +64,8 @@ class NotificationServiceTest extends TestCase
 
         $result = $this->service->getNotifications($this->testUserId);
 
-        foreach ($result['list'] as $item) {
-            $this->assertNotEquals('Unit Test Other User Notif', $item['title']);
-        }
+        $titles = array_column($result['list'], 'title');
+        $this->assertNotContains('Unit Test Other User Notif', $titles);
     }
 
     // ------------------------------------------------------------------

@@ -5,6 +5,7 @@ namespace app\controller;
 use think\Request;
 use think\Response;
 use app\service\StaffingService;
+use app\model\ActivityVersion;
 
 class StaffingController
 {
@@ -17,6 +18,9 @@ class StaffingController
 
     public function index(Request $request, int $activityId): Response
     {
+        if (!ActivityVersion::find($activityId)) {
+            return json(['success' => false, 'code' => 404, 'error' => 'Activity not found'], 404);
+        }
         try {
             $staffing = $this->staffingService->getStaffing($activityId);
             return json(['success' => true, 'code' => 200, 'data' => $staffing]);
@@ -27,12 +31,16 @@ class StaffingController
 
     public function create(Request $request, int $activityId): Response
     {
+        if (!ActivityVersion::find($activityId)) {
+            return json(['success' => false, 'code' => 404, 'error' => 'Activity not found'], 404);
+        }
         $data = json_decode($request->getContent(), true);
         try {
             $staffing = $this->staffingService->createStaffing($activityId, $data, $request->user);
             return json(['success' => true, 'code' => 201, 'data' => $staffing], 201);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 
@@ -43,7 +51,8 @@ class StaffingController
             $staffing = $this->staffingService->updateStaffing($id, $data, $request->user);
             return json(['success' => true, 'code' => 200, 'data' => $staffing]);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 
@@ -53,7 +62,8 @@ class StaffingController
             $this->staffingService->deleteStaffing($id, $request->user);
             return json(['success' => true, 'code' => 200, 'message' => 'Deleted']);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 }

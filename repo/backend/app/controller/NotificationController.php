@@ -37,7 +37,8 @@ class NotificationController
             $this->notificationService->markRead($id, $request->user->id);
             return json(['success' => true, 'code' => 200, 'message' => 'Marked as read']);
         } catch (\Exception $e) {
-            return json(['success' => false, 'code' => 400, 'error' => $e->getMessage()], 400);
+            $code = $e->getCode() ?: 400;
+            return json(['success' => false, 'code' => $code, 'error' => $e->getMessage()], $code);
         }
     }
 
