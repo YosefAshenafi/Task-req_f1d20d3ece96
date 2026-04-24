@@ -228,6 +228,58 @@ class EndpointOrderTest extends HttpTestCase
     }
 
     // ------------------------------------------------------------------
+    // Multi-tenant authorization via HTTP (B13, B14) — replaces the
+    // service-level bypass previously in API_tests/OrderApiTest.php.
+    // ------------------------------------------------------------------
+
+    public function testRegularUserSeesOnlyOwnOrders(): void
+    {
+        // Seed one order owned by the regular user, one owned by someone else.
+        $owner = $this->ensureUser('http-order-owner', 'regular_user');
+        $other = $this->ensureUser('http-order-other', 'regular_user');
+
+        $mine = $this->createOrder('placed');
+        $mine->created_by   = $owner->id;
+        $mine->team_lead_id = $owner->id;
+        $mine->save();
+
+        $theirs = $this->createOrder('placed');
+        $theirs->created_by   = $other->id;
+        $theirs->team_lead_id = $other->id;
+        $theirs->save();
+
+        $this->loginAsRole('regular_user', 'http-order-owner');
+        $res = $this->get('/api/v1/orders');
+        $this->assertStatus(200, $res);
+
+        $list = $res['body']['data']['list'] ?? [];
+        $this->assertNotEmpty($list, 'owner should see at least their own order');
+        foreach ($list as $row) {
+            $this->assertSame(
+                $owner->id,
+                (int) ($row['created_by'] ?? 0),
+                'regular_user must only see their own orders; got created_by=' . ($row['created_by'] ?? 'null')
+            );
+        }
+    }
+
+    public function testReviewerCanReadAnyOrder(): void
+    {
+        // Order created by someone else — reviewer must still be able to GET it.
+        $someoneElse = $this->ensureUser('http-order-victim', 'regular_user');
+        $order = $this->createOrder('placed');
+        $order->created_by   = $someoneElse->id;
+        $order->team_lead_id = $someoneElse->id;
+        $order->save();
+
+        $this->loginAsRole('reviewer', 'http-order-reviewer');
+        $res = $this->get('/api/v1/orders/' . $order->id);
+        $this->assertStatus(200, $res);
+        $this->assertSuccess($res);
+        $this->assertSame($order->id, (int) ($res['body']['data']['id'] ?? -1));
+    }
+
+    // ------------------------------------------------------------------
     // Helpers
     // ------------------------------------------------------------------
 

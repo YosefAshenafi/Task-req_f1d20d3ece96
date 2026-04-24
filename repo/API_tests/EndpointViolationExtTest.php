@@ -90,14 +90,19 @@ class EndpointViolationExtTest extends HttpTestCase
         $this->assertForbidden($res);
     }
 
-    public function testUpdateRuleAdminCanReachEndpoint(): void
+    public function testUpdateRuleAdminPersistsPoints(): void
     {
+        // B9 quality repair: replaces assertNotEquals(401/403) pair with a
+        // round-trip behavior check (PUT then GET).
         $this->loginAsAdmin();
         $res = $this->put('/api/v1/violations/rules/' . $this->rule->id, [
             'points' => 10,
         ]);
-        $this->assertNotEquals(401, $res['status'], 'Expected auth to pass but got 401');
-        $this->assertNotEquals(403, $res['status'], 'Expected auth to pass but got 403');
+        $this->assertStatus(200, $res);
+        $this->assertSuccess($res);
+
+        $reread = $this->get('/api/v1/violations/rules/' . $this->rule->id);
+        $this->assertSame(10, (int) ($reread['body']['data']['points'] ?? -1));
     }
 
     // ------------------------------------------------------------------
@@ -117,14 +122,17 @@ class EndpointViolationExtTest extends HttpTestCase
         $this->assertForbidden($res);
     }
 
-    public function testDeleteRuleAdminCanReachEndpoint(): void
+    public function testDeleteRuleAdminRemovesRow(): void
     {
-        // Create a separate rule so this test does not destroy the shared fixture
+        // Seed a disposable rule, delete it, confirm row gone.
         $disposableRule = $this->createRule('http-violext-rule-delete-');
+        $ruleId = $disposableRule->id;
         $this->loginAsAdmin();
-        $res = $this->delete('/api/v1/violations/rules/' . $disposableRule->id);
-        $this->assertNotEquals(401, $res['status'], 'Expected auth to pass but got 401');
-        $this->assertNotEquals(403, $res['status'], 'Expected auth to pass but got 403');
+
+        $res = $this->delete('/api/v1/violations/rules/' . $ruleId);
+        $this->assertStatus(200, $res);
+        $this->assertSuccess($res);
+        $this->assertNull(ViolationRule::find($ruleId), 'Rule should be deleted');
     }
 
     // ------------------------------------------------------------------
@@ -146,13 +154,25 @@ class EndpointViolationExtTest extends HttpTestCase
         $this->assertForbidden($res);
     }
 
-    public function testGetViolationsByUserAdminCanReachEndpoint(): void
+    public function testGetViolationsByUserReturnsOnlyTargetRows(): void
     {
         $target = $this->ensureUser('http-violext-target', 'regular_user');
+        // Attach the shared violation to the target for this assertion.
+        $this->violation->user_id = $target->id;
+        $this->violation->save();
+
         $this->loginAsAdmin();
         $res = $this->get('/api/v1/violations/user/' . $target->id);
-        $this->assertNotEquals(401, $res['status'], 'Expected auth to pass but got 401');
-        $this->assertNotEquals(403, $res['status'], 'Expected auth to pass but got 403');
+        $this->assertStatus(200, $res);
+        $this->assertSuccess($res);
+        $list = $res['body']['data']['list']
+             ?? $res['body']['data']
+             ?? [];
+        $this->assertIsArray($list);
+        // Every returned row must be for the target user.
+        foreach ($list as $row) {
+            $this->assertEquals($target->id, (int) ($row['user_id'] ?? 0));
+        }
     }
 
     // ------------------------------------------------------------------
@@ -172,13 +192,15 @@ class EndpointViolationExtTest extends HttpTestCase
         $this->assertForbidden($res);
     }
 
-    public function testGetViolationsByGroupAdminCanReachEndpoint(): void
+    public function testGetViolationsByGroupReturns200WithListShape(): void
     {
         $this->loginAsAdmin();
-        // group_id=1 may return an empty list; any non-401/non-403 response is acceptable
         $res = $this->get('/api/v1/violations/group/1');
-        $this->assertNotEquals(401, $res['status'], 'Expected auth to pass but got 401');
-        $this->assertNotEquals(403, $res['status'], 'Expected auth to pass but got 403');
+        $this->assertStatus(200, $res);
+        $this->assertSuccess($res);
+        // Shape check: the response carries a collection under data (list or root).
+        $data = $res['body']['data'] ?? null;
+        $this->assertTrue(is_array($data), 'data should be an array/collection');
     }
 
     // ------------------------------------------------------------------
@@ -202,16 +224,33 @@ class EndpointViolationExtTest extends HttpTestCase
         $this->assertForbidden($res);
     }
 
-    public function testFinalDecisionAdminCanReachEndpoint(): void
+    public function testFinalDecisionRejectsPendingViolation(): void
     {
+        // B8a: pending violation cannot receive a final decision — expect 4xx,
+        // not a silent success.
         $this->loginAsAdmin();
-        // The service may return 400/422 when the violation is not in the correct
-        // state for a final-decision; what matters is that auth passes.
+        $this->violation->status = 'pending';
+        $this->violation->save();
         $res = $this->post('/api/v1/violations/' . $this->violation->id . '/final-decision', [
             'decision' => 'upheld',
         ]);
-        $this->assertNotEquals(401, $res['status'], 'Expected auth to pass but got 401');
-        $this->assertNotEquals(403, $res['status'], 'Expected auth to pass but got 403');
+        $this->assertGreaterThanOrEqual(400, $res['status']);
+        $this->assertFalse($res['body']['success'] ?? true);
+    }
+
+    public function testFinalDecisionUpholdsReviewedViolation(): void
+    {
+        // B8b: after a review, a final decision of 'upheld' must persist.
+        $this->loginAsAdmin();
+        $this->violation->status = 'reviewed';
+        $this->violation->save();
+        $res = $this->post('/api/v1/violations/' . $this->violation->id . '/final-decision', [
+            'decision' => 'upheld',
+        ]);
+        $this->assertStatus(200, $res);
+        $this->assertSuccess($res);
+        $reloaded = Violation::find($this->violation->id);
+        $this->assertSame('upheld', $reloaded->status);
     }
 
     // ------------------------------------------------------------------

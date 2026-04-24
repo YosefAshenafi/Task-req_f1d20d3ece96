@@ -7,14 +7,11 @@
          failOnRisky="false"
          failOnWarning="false"
 >
-    <php>
-        <env name="DB_TYPE" value="mysql"/>
-        <env name="DB_HOST" value="127.0.0.1"/>
-        <env name="DB_NAME" value="campusops_test"/>
-        <env name="DB_USER" value="root"/>
-        <env name="DB_PASS" value=""/>
-        <env name="DB_PORT" value="3306"/>
-    </php>
+    <!--
+        Tests use SQLite in-memory via unit_tests/bootstrap.php; no host-side
+        DB vars are needed. The <php><env> block that previously lived here was
+        dead configuration and has been removed to avoid misleading contributors.
+    -->
     <testsuites>
         <testsuite name="unit">
             <directory>unit_tests</directory>

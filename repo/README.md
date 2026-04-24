@@ -33,11 +33,17 @@ All application state lives in MySQL. The PHP container has no persistent filesy
 ### First-time setup
 
 ```bash
-docker compose build --no-cache
+docker compose build
 docker compose up -d
 docker compose exec php php think migrate:run
 docker compose exec php php think seed:run
 ```
+
+> **Legacy Docker Compose v1 users:** the classic binary uses a hyphen —
+> `docker-compose up -d` is the v1 equivalent of `docker compose up -d`.
+> The rest of this guide uses the modern v2 `docker compose` plugin syntax;
+> if you are stuck on v1, replace every `docker compose …` line with
+> `docker-compose …` (hyphenated).
 
 Verify the stack is healthy before proceeding:
 
@@ -110,6 +116,8 @@ A successful response contains `data.access_token`. A `401` or connection refuse
 
 ## Feature reference
 
+**Activity State Machine:** Draft -> Published -> In Progress -> Completed -> Archived (reviewer-approved transitions via `POST /api/v1/activities/:id/{publish,start,complete,archive}`)
+
 **Order State Machine:** Placed -> Pending Payment (30-min auto-cancel) -> Paid -> Ticketing -> Ticketed -> Closed/Canceled
 
 **Export:** PNG, PDF, XLSX with watermarks (username + timestamp applied by `ExportService`).
@@ -118,7 +126,7 @@ A successful response contains `data.access_token`. A `401` or connection refuse
 
 ## Tests
 
-All tests run against an **SQLite in-memory database** — no running containers or external services required.
+All PHP and frontend tests run **inside Docker containers** — no local PHP, Composer, Node, or `xmllint` installation is required. The PHPUnit suite uses an SQLite in-memory database, so no external DB service is needed at test time.
 
 ### Recommended: run_tests.sh wrapper
 
@@ -128,16 +136,12 @@ From the repository root:
 ./run_tests.sh
 ```
 
-The script automatically prefers the Docker PHP container when it is running; it falls back to the local `backend/vendor/bin/phpunit` binary otherwise. Writes JUnit XML and a log to `test-results/`. `xmllint` must be available locally for the summary output (it is pre-installed in the PHP container; on macOS/Linux install via your package manager).
+The script requires Docker (it exits with code 127 otherwise). It builds the `php` and `composer` images, runs PHPUnit inside the `php` service, then runs `jest --ci` inside the `node` service. Results land in `test-results/junit.xml` and `test-results/output.txt`; the summary is rendered from within the container.
 
-### Manual: direct PHPUnit
+### Manual: direct PHPUnit (inside the container)
 
 ```bash
-# Inside the Docker container
 docker compose exec php ./vendor/bin/phpunit --configuration /var/www/phpunit.xml --testdox
-
-# Without Docker (requires backend/vendor to exist)
-./backend/vendor/bin/phpunit --configuration phpunit.xml --testdox
 ```
 
 Three suites are defined in `phpunit.xml`:

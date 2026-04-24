@@ -33,7 +33,7 @@ class AuthApiTest extends TestCase
 
     public function testLoginThrowsForDisabledAccount(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'disabled');
+        $user = $this->seedUser('testuser', 'password123', 'disabled');
         
         $this->expectException(\Exception::class);
         $this->expectExceptionCode(403);
@@ -43,7 +43,7 @@ class AuthApiTest extends TestCase
 
     public function testLoginThrowsForLockedAccount(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'active');
+        $user = $this->seedUser('testuser', 'password123', 'active');
         $user->locked_until = date('Y-m-d H:i:s', time() + 3600);
         $user->save();
 
@@ -55,7 +55,7 @@ class AuthApiTest extends TestCase
 
     public function testLoginReturnsUserAndTokenOnSuccess(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'active');
+        $user = $this->seedUser('testuser', 'password123', 'active');
         
         $result = $this->service->login('testuser', 'password123');
 
@@ -69,7 +69,7 @@ class AuthApiTest extends TestCase
 
     public function testLoginIncrementsFailedAttemptsOnWrongPassword(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'active');
+        $user = $this->seedUser('testuser', 'password123', 'active');
 
         try {
             $this->service->login('testuser', 'wrong-password');
@@ -83,7 +83,7 @@ class AuthApiTest extends TestCase
 
     public function testLoginLocksAfterFiveFailedAttempts(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'active');
+        $user = $this->seedUser('testuser', 'password123', 'active');
         $user->failed_attempts = 4;
         $user->save();
 
@@ -95,7 +95,7 @@ class AuthApiTest extends TestCase
 
     public function testLogoutInvalidatesSession(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'active');
+        $user = $this->seedUser('testuser', 'password123', 'active');
         $session = Session::createForUser($user->id);
         $token = $session->token;
 
@@ -106,7 +106,7 @@ class AuthApiTest extends TestCase
 
     public function testValidateTokenReturnsUserForValidToken(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'active');
+        $user = $this->seedUser('testuser', 'password123', 'active');
         $session = Session::createForUser($user->id);
 
         $result = $this->service->validateToken($session->token);
@@ -124,7 +124,7 @@ class AuthApiTest extends TestCase
 
     public function testUnlockAccountResetsFailedAttempts(): void
     {
-        $user = $this->createMockUser('testuser', 'password123', 'active');
+        $user = $this->seedUser('testuser', 'password123', 'active');
         $user->failed_attempts = 5;
         $user->locked_until = date('Y-m-d H:i:s', time() + 3600);
         $user->save();
@@ -136,7 +136,7 @@ class AuthApiTest extends TestCase
         $this->assertNull($user->locked_until);
     }
 
-    private function createMockUser(string $username, string $password, string $status): User
+    private function seedUser(string $username, string $password, string $status): User
     {
         $user = User::where('username', $username)->find();
         if (!$user) {

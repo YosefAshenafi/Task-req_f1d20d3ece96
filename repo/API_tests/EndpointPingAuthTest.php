@@ -182,4 +182,70 @@ class EndpointPingAuthTest extends HttpTestCase
         $this->assertStatus(200, $res);
         $this->assertSuccess($res);
     }
+
+    // ------------------------------------------------------------------
+    // Lockout behavior via the HTTP pipeline (Prompt: 5 failed → 15 min lock)
+    // ------------------------------------------------------------------
+
+    public function testLoginLocksAfterFiveFailedAttempts(): void
+    {
+        // B1: five bad passwords must trigger a 429 lockout on the next attempt.
+        // AuthService::login throws code 429 once failed_attempts reaches 5,
+        // and the controller passes that status through.
+        $user = $this->ensureUser('http-ping-lockout', 'regular_user');
+        // Make sure we start clean regardless of state from other tests.
+        $user->failed_attempts = 0;
+        $user->locked_until    = null;
+        $user->save();
+
+        for ($i = 1; $i <= 5; $i++) {
+            $res = $this->post('/api/v1/auth/login', [
+                'username' => 'http-ping-lockout',
+                'password' => 'wrong-password',
+            ]);
+            // Attempts 1-4 return 401; attempt 5 flips the lock and returns 429.
+            $this->assertTrue(
+                in_array($res['status'], [401, 429], true),
+                "Attempt {$i} returned unexpected status {$res['status']}: " . json_encode($res['body'])
+            );
+        }
+
+        // After 5 failures, the user row must carry a future locked_until.
+        $user->refresh();
+        $this->assertNotNull($user->locked_until, 'locked_until must be set after 5 failures');
+        $this->assertGreaterThan(time(), strtotime($user->locked_until));
+
+        // Any further login attempt — even with the correct password — must be 429.
+        $locked = $this->post('/api/v1/auth/login', [
+            'username' => 'http-ping-lockout',
+            'password' => 'HttpTest1!Pass',
+        ]);
+        $this->assertStatus(429, $locked);
+        $this->assertFalse($locked['body']['success'] ?? true);
+    }
+
+    public function testLoginSucceedsAfterAdminUnlock(): void
+    {
+        // B2: admin unlock must clear failed_attempts/locked_until so the user
+        // can log in again with correct credentials.
+        $user = $this->ensureUser('http-ping-unlock-target', 'regular_user');
+        $user->failed_attempts = 5;
+        $user->locked_until    = date('Y-m-d H:i:s', time() + 900);
+        $user->save();
+
+        // Admin unlocks the account.
+        $this->loginAsAdmin('http-test-admin');
+        $unlockRes = $this->post('/api/v1/auth/unlock', ['user_id' => $user->id]);
+        $this->assertStatus(200, $unlockRes);
+        $this->assertSuccess($unlockRes);
+
+        // Clear admin token so the target user logs in cleanly.
+        $this->token = '';
+        $loginRes = $this->post('/api/v1/auth/login', [
+            'username' => 'http-ping-unlock-target',
+            'password' => 'HttpTest1!Pass',
+        ]);
+        $this->assertStatus(200, $loginRes);
+        $this->assertNotEmpty($loginRes['body']['data']['access_token'] ?? '');
+    }
 }
